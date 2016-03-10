@@ -1,0 +1,364 @@
+#Project Reference
+
+
+[Project Layout]()    
+[Git Repositories]()    
+[Production & Development Settings]()    
+[Staic Files: javascript,css]()    
+[Staic Files: Images (or other media)]()    
+[Django Admin]()    
+[Cache]()    
+[Web Servers]()    
+
+
+
+
+## Project Layout
+
+The specific layout is a mixture of common practices and personal prefrences. However, django is flexible and everything could be easily changed:
+
+
+**Production**
+
+    /home/django/
+    |
+    |- site_repo.git  (bare repository, dev pushes to this repo)
+    |
+    |- mysite (the project directory)
+        |
+        |- manage.py (the django utility for the project)
+        |
+        |- logs (logs directory)
+        |   |
+        |   |- main.log (production log, use logging.getLogger("main").info("production msg"), logs everything from log level info)
+        |   |- debug.log (use logging.debug("debug msg"), logs when DEBUG_LOG=True)
+        |   |- debug_db.log (django logs all db access, logs when DEBUG_DB_LOG=True)  
+        |
+        |- media_resources (pre-prepared site media directory, e.g. logo, icons, etc. Source directory for collectstatic, allows to keep images outside the repository)
+        |
+        |- media_uploads (media directory, not a repository, for user uploaded resources, e.g. avatars)
+        |
+        |- site_config (optional settings directory on the python path, but not in a repository)
+        |   |
+        |   |- settings_production.py (settings.py will try to import this file, make sure it exists in production)
+        |   |- settings_tmp.py (settings.py will try to import this file, useful for ad-hoc settings during dev)
+        |   |- site_auth.py (credentials for password-protected site via Apache auth, if used)
+        |
+        |- site_repo (git repo, pulls from site_repo.git. This is the actual website code loaded to mod_wsgi)
+        |   |
+        |   |- settings.py
+        |   |- urls.py
+        |   |- wsgi.py
+        |   etc...
+        |
+        |- static_root (static js & css files, created from the repository with manage.py collectstatic)
+        
+**Development Machine**
+
+Similar to production, but without the bare repository.    
+The site is saved in you home directory.
+
+On a Mac:
+
+    /Users/username/myprojects/
+    |
+    |- mysite (the project directory)
+        |
+        |- manage.py (the django utility for the project)
+        |
+        
+    ...
+
+
+
+
+On Ubuntu:
+
+    /home/username/myprojects/
+    |
+    |- mysite (the project directory)
+        |
+        |- manage.py (the django utility for the project)
+        |
+        
+    ...
+
+
+
+## Git Repositories
+
+* Server: The project bare git repository is on production, at **/home/django/site_repo.git**
+* Server: The production website repository, which is the code that mod_wsgi loads, is at  **/home/django/mysite/site_repo**
+* Development local website: A clone of the server bare repository at your user directory, at **~/myprojectsd/mysite/site_repo**
+
+
+*Note: If you replaced myprojects or mysite with your own projects and site dir names, it will appear under the names you chose*
+
+When you work on the code on your local machine, you push to the bare git repository on the server, and then deploy by pushing master to the production repository. See [Deployment](deployment.md)
+
+    
+    
+## Production & Development Settings  
+
+
+#### Separate settings file for development and production
+
+The common practice is to create several environment specific settings files, in addition to the django main settings file. The project includes the following environment settings files: 
+
+* settings_production.py
+
+* settings_dev.py
+
+Settings.py tries to import both, but on production, only settings_production.py is available, and on development machine only settings_dev.py file is available. 
+The imported file environment setting file adjusts the main settings. 
+
+The most important change is DEBUG: in settings_production.py DEBUG=False, and in settings_dev.py DEBUG=True.
+
+
+Note that **both** settings files are maintained in the repository. To adjust for production or development, settings.py tries to import the environment settings files from a **non-repository** directory. The correct environment file should be copied on each machine from the repository (**site_repo** directory), to the **site_config** directory.
+
+*Note: site_config is on the python path and you can import from it*
+
+So the settings look as following on production:
+
+    /home/django/
+    |
+    |- site_repo.git  (bare repository, dev pushes to this repo)
+    |
+    |- mysite (the project directory)
+        |
+        |- manage.py (the django utility for the project)
+        |
+        |- site_config
+        |	|
+        |	|- settings_production.py (imported when the site loads)
+        |
+        |- site_repo
+        |   |
+        |   |- settings.py
+        |   |- settings_production.py (just saved in repo)
+        |   |- settings_dev.py (just saved in repo)               
+        |   |- urls.py
+        |   |- wsgi.py
+        ...
+        
+And on development machine:
+
+    ~/myprojects/mysite/
+    |   
+    |- site_repo.git  (bare repository, dev pushes to this repo)
+    |
+    |- mysite (the project directory)
+        |
+        |- manage.py (the django utility for the project)
+        |
+        |- site_config
+        |	|
+        |	|- settings_dev.py (imported when the site loads)
+        |
+        |- site_repo
+        |   |
+        |   |- settings.py
+        |   |- settings_production.py (maintained in repo)
+        |   |- settings_dev.py (just saved in repo)               
+        |   |- urls.py
+        |   |- wsgi.py
+        ...
+
+*Note: When you commit a change to settings_dev.py or settings_production.py in the repository, you have to copy the changed file to site_config/ and reload the site, to see the settings changes take effect
+
+
+##### Ad-hoc settings
+
+Sometimes you just need an adhoc settings change to test or try something. So there is a another settings file in site_config: settings_tmp.py. Use it for these adhoc settings.
+
+Settings_tmp.py is imported after settings_dev, but before settings_production.*, so production settings always have priority.
+  
+
+
+## Staic Files: javascript,css
+
+Out of the box, django separates external resources into two categories: site resources, and user uploads. Each is served from it's own url and root directory.  
+However, it's often handy to have three categories, as follows:
+
+1. **Scripts:** js & css files, that change often during development.
+1. **Non js/css**: Pre-prepared, optimized assets, such as the logo, icons, images etc.
+1. **User uploads**: e.g. avatars
+
+
+#### Where the files are saved?
+
+Scripts files (js, css) should be saved and maintained in the repository. The local development site will serve them via django, from the repository. 
+
+On production, django's collectstatic copies the scripts to external meida directory, and the files are are served by the webserver from this directory (and not by django).
+
+Images (and other static, non-scripts resources) are managed manualy, and you should upload them to the server media dirctory.  
+
+
+
+#### Serving scripts: js,css
+
+**Development:**    
+
+Webserver | django development server   
+----------|--------------------------  
+**Settings**|**DEBUG=True**   
+
+Work on django development server:
+
+	you@dev-machine: python ~/myprojects/mysite/manage.py runserver
+
+Django dev server will serve the scripts directly from the repository. This is great for development, since every change is immediately reflected in the  website, at 127.0.0.1:8000.
+
+*Note:Django development server will **not** serve static files when DEBUG=False*
+
+**Production:**
+  
+
+Webserver | Nginx + Apache   
+----------|--------------------------  
+**Settings**|**DEBUG=False**  
+
+
+Static files are served directly by Nginx. Nginx serves the files from the STATIC_ROOT director (mysite/static_root), and does not pass the js or css request to django. 
+
+Since the files are **not** served from the repository, every change to the static files in the repository requires update to the files in mysite/static_root: 
+
+    you@production-machine: python ~/myprojects/mysite/manage.py collectstatic
+    you@production-machine: site-reload
+    
+This update with collectstatic a is part of deployment, see [deployment](deployment.md).
+    
+Django identifies the correct file to serve with the static template tag, so you must use this tag in the templates for js,css files:
+
+	<link href="{% static 'foo.css' %}" type="text/css" rel="stylesheet">
+	<script src="{% static 'bar.js' %}" type="text/javascript">
+	
+*Note: The static tag is loaded in the base template. see [Coding Reference](coding_ref.md)*
+
+
+**Testing**
+
+Webserver | Nginx + Apache   
+----------|--------------------------  
+**Settings**|**DEBUG=True**  
+
+
+
+Before pushing code to production, it's better to make sure it works with Apache/Nginx on the dev machine, and not only on the django dev server. 
+If you changed any static file, you will need to run collectstatic and reload the site, and then browse to the local Apache/Nginx site at 127.0.0.1:
+
+    you@dev-machine: python ~/myprojects/mysite/manage.py collectstatic
+    you@dev-machine: site-reload
+
+ 
+**Summary:**    
+1. During **development**, use django development server, so files are served directly from the repository when DEBUG=True.   
+2. On **production**, static files are served with Nginx. To see changes to js, css when the site is served via Nginx/Apache you must run collectstatic and reload the site.    
+
+
+*Note: django also supports serving static files from the application's  directory, see django docs*
+
+## Staic Files: Images (or other media)
+
+#### Images
+
+1. Images are saved outsite the repository **mysite/media_resources/**
+2. Collectstatic looks for new or changed images (the images directory is included in STATIFILES_DIR)
+3. Refefrnces to images in templates use the static template tag:
+
+		<img src="{% static 'foo.png' %}">
+		
+3. The images files are served similarly to js,css static files, by Nginx or django development server. See [Staic Files: javascript,css]()
+
+
+Since images are saved outside the repository, you will need to scp the files to production:
+Example:
+
+        you@dev-machine: scp logo.png django@PUB.IP.IP.IP:~/mysite/media_resources/
+        
+Then run collectstatic on the server.
+
+*Note: Saving images outsied the repository is a personal preference. If you want to save images in the repository, you can add a "media" directory to site_repo, and save the images there. Just add this directory to STATICFILES_DIR, so collectstatic find them. Collectstatic will also find images in any app with a "static" sub-directory, if the  
+
+
+*Note: The favicon is also served from this directory. The file is at mysite/media_resources/favicon.ico, see the projects base.html.*
+
+
+#### Uploads
+
+1. Images are served
+2. Files are served from **mysite/media_uploads/** directory, both for runserver , or via Nginx
+2. Uploads are configured with MEDIA_URL and MEDIA_ROOT, django's settings for uploaded files.
+3. Refernces in templates should use {{ MEDIA_URL }}:
+
+		<img src="{{MEDIA_URL}}bar.png">		
+4. Uploads Limit:
+You can limit the upload file size in django, with a custom file uploader (see the django docs).    
+The project limits requests in Apache conf file, with LimitRequestBody, to 10MB. You can change it according to the typical uploads of your site:
+
+    	you@vps-machine$ nano /etc/apache2/apache2.conf.django
+    	you@vps-machine$ nano /etc/apache2/apache2.conf.django.auth
+    	you@vps-machine$ site_auth_off (or site_auth_on)    
+   
+
+*Note: For external files, expire date, and browser cache, see [Web Servers]()*
+
+
+## Django Admin
+
+**To Access the production website admin:**
+
+www.yourdomain.com/admin
+
+**To Access admin on the local development site:**
+
+Django dev server: 127.0.0.1:80000/admin   
+Nginx+Apache: 127.0.0.1/admin
+
+
+
+Then login with the admin username and password, which you provided during the installation. You can change the admin url, see django docs and urls.py in the project.
+
+
+## Cache
+
+The site is configured with the simple django basic file-based cache, at **mysite/django_cache**.  
+
+Use the cache:
+
+    from django.core.cache import cache
+    ...
+    cache.set('key','foo')
+    cache.get('key')
+    
+  See an example in home/views.py.
+
+*Note: django provides many other caching options, multiple caches, etc, see the django docs.*
+
+
+## Web Servers
+
+**Django Development Server**: Serves the site at port 8000. This is the best way to develop and test. The site is served at 127.0.0.1:8000,  and when DEBUG=True, everything is served with this server, including js, css (and images), so every change in the code is immidiatly reflected in the site. However, this server is not secured and not suitable for production.
+
+**Nginx**: Nginx serves requests on port 80. Requests for static files are served directly by Nginx. For all the other requests, Nginx serves as a proxy and passes the requests to Apache. This configuration has many advantages, django docs and other places have a lot of details as well as the pros and cons compared to other configurations.  
+Since static files are not served from the repo, collectstatic and site reload is required when the static files change. See External files.
+
+**Apache**: Apache listens on 127.0.0.1:8001. So it doesn't listen to external requests, only to requests that Nginx passes to it. These are the non static/media requests that go to Apache, which sends them to django via mod_wsgi.
+
+**Browsers Cache:** In Nginx, the static, media, and uploads, are configured to 180d expiry. This expiry date will not affect js,css, since each time you change the source of js,css, you should run collectstatic. Then, when you reload the site, django will not request the old cached files. With collectstatic, any change in the js,css scripts is reflected with requests to the newer versions.
+
+
+**Replace cached images** Images do not have "collectstatic", so during development, in order to see new images instead of the cached, just clear the browser's cache, or use select "ignore cache" from the developer's tools.    
+Once images are ready for production, the best solution is to change the image name in the site code, so the browsers will not use an older cached image.   
+Otherwise change the 180d config in /etc/nginx/sites-enabled/django. Later, when images change, the best solution is to save the new image with a new name
+
+Support this project with my affiliate link| 
+-------------------------------------------|
+https://www.linode.com/?r=cc1175deb6f3ad2f2cd6285f8f82cefe1f0b3f46|
+
+
+
+
+
+
