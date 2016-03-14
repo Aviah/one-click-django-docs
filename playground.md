@@ -1,7 +1,7 @@
 #Playground
 
 
-**The playground let's you play and and experiment a bit with the one-click-django environment** 
+**Play and and experiment a bit with the one-click-django environment** 
 
 ## Environment
 
@@ -78,7 +78,7 @@ Django starts the development server, which should output:
 	
 Browse to the local site, at `127.0.0.1:8000`. The new message should appear with the !!!!!
 
-You can stop the django runserver with Ctrl+C (otherwise it runs and reloads with any code change)
+You can stop the django runserver with Ctrl+C (otherwise it will continue to run and auto reload the code when you change it).
 
 Time to commit and push this change.
 Check the local repository:
@@ -172,19 +172,19 @@ These are the deployment steps that fabric runs:
 
 1. Push master to `remote production master`
 2. Update the production working directory with the latest update, with `git reset --hard`
-3. Update the `site_config` directory: fabric copies the `settings_production.py` file from the repository. All the settings files are maintained in the repository, but mod_wsgi loads the settings from `site_config`, which should include only the specific environment settings. See [Project Reference](project_ref.md) )
+3. Update the `site_config` directory: fabric copies the `settings_production.py` file from the repository. All the settings files are maintained in the repository, but mod_wsgi loads the settings from `site_config`, which should include only the specific environment settings. See the [Project Reference](project_ref.md).
 4. Finally, to tell mod_wsgi to reload the new code, `touch wsgi.py`.
 
 *Note: fabric keeps the `site_config/secrets.py` where you can save sensitive settings like django SECRET_KEY or passwords outside the repository. This option is important especially for public repositories*
 
 
 
-Next, we will update a static file, `main.css`. We will change the button fonts to the blue.         
+Next, we will update a static file, `main.css`: change the button fonts color to blue.         
 From the `site_repo` directory:
 
 	you@dev-machine: nano static/main.css
 	
-Edit this line as follows:
+Edit the following line:
 
 	.info {font-weight:bold;color:blue;}
 	
@@ -252,7 +252,7 @@ To continue to the tutorial: [Django Tutorial Part 1: Create the Polls App
 Take a look at the project files, especially the repository `site_repo`. These files include a few examples of the basic django concepts.
 
 If you are new to django, why not take our version to the official django polls tutorial. It implments the polls app in in this real development-deployment-production environment, with git. When you finish this tutorial, the polls app will run on the real website at `www.yourdommain.com/polls`.    
-Start here [Django Tutorial with Deployment](https://github.com/Aviah/one-click-django-polls-tutorial)
+Start here: [Django Tutorial with Deployment](https://github.com/Aviah/one-click-django-polls-tutorial)
 
 For the complete project reference: layout, files, directories, settings, deployment, media files, logging, coding reference etc, see the [Project reference docs](https://github.com/aviah/one-click-django-docs/)
 
