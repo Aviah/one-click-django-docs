@@ -15,7 +15,7 @@
 
 ## Project Layout
 
-The specific layout is a mixture of common practices and personal prefrences. However, django is flexible and everything could be easily changed:
+The specific layout is a mixture of common practices and personal preferences. However, django is flexible and everything could be easily changed:
 
 
 **Production**

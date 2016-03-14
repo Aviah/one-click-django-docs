@@ -1,6 +1,6 @@
 # Coding Reference
 
-This document is a quick refrence. For more details about the project layout, production and development settings, static files, etc., see Project_Ref.
+This document is a quick reference. For more details about the project layout, production and development settings, static files, etc., see Project_Ref.
 
 [Python/Django]()    
 [Settings]()    
@@ -33,7 +33,7 @@ The conventional django settings import:
 
 Templates are saved in the site_repo/templates directory.
 
-The base template (mysite/site_repo/template/base.html) should include all the site global resources, e.g. basic page structure, favicon, css, refrences to external resources like bootstrap, jquery, fonts etc.
+The base template (mysite/site_repo/template/base.html) should include all the site global resources, e.g. basic page structure, favicon, css, references to external resources like bootstrap, jquery, fonts etc.
 
 Then, a new template can include only the few lines required for it's specific purpse. Django "extends" the base template, so another  template inherits all the base template code, except where it changes the base template defaults.
 
