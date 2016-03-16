@@ -20,7 +20,7 @@ The master branch should always be (closing) stable.
 As you add or update your code, work in a separate branch, and merge to master when something is stable and ready for production. 
 
 The on-going development progress is pushed to the central project repository at `@server:/home/django/mysite.git`.    
-This is the `origin` remote of the development repository. This repo is separated from the production website. You can push often to save your progress to this repo. Simply use `git push` or `git push --all`.
+This is the `origin` remote of the development repository. This repo is separated from the production website, so you can push often to save your progress to this repo. Simply use `git push` or `git push --all`.
     
 After you pushed a new master version that is ready for production, deploy  it to the website.
 
@@ -125,7 +125,7 @@ Similarily to the deployment of js,css, this will run `collectstatic` on the ser
 
 *Note: If you find yourself uploading resources frequently, you can add a fabric command to upload and deploy. Edit the fabfile in your home directory.*
 
-*Note: If you want to save images in the repository, and upload them with git, see the project refernce [Static Files:Images](#staic-files-images-or-other-media)*
+*Note: If you want to save images in the repository, and upload them with git, see the project refernce [Static Files:Images](project_ref.md#staic-files-images-or-other-media)*
 
 ## Deployment of Database Schema Changes
 
@@ -162,7 +162,7 @@ To provide another name:
 	
 *Note: To load a backup, you will have to ssh to the server and use `manage.py loaddata`. See the django docs. Loading data will revert all data to the date and time of the backup, so be careful (and load it in maintenance mode, and only after backing up the current database properly)* 
 
-*Note: To backup with `mysqldumpz see [What's Next](what_next.md). The mysqldump utility runs SQL, and unlike `manage.py`, obviously, regardless of the django code. So it will backup any data in the database, even when manage.py fails (migrations issues, missing models etc). See the django docs about dumpdata and loaddata*
+*Note: To backup with `mysqldump` see [What's Next](what_next.md). The mysqldump utility runs SQL, and unlike `manage.py`, obviously, regardless of the django code. So it will backup any data in the database, even when manage.py fails (migrations issues, missing models etc). See the django docs about dumpdata and loaddata*
 
 
 
@@ -174,7 +174,7 @@ To provide another name:
     you@dev-machine$ fab site_up // or fab site_auth_on to password protect the site
     
    
-This will go maintenance, deploy code, migrate the server's database, and reload the site
+This will go maintenance, deploy code, migrate the server's database, and reload the site.
     
 
 Support this project with my affiliate link| 
