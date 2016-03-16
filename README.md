@@ -24,7 +24,7 @@ You need to install the server, and the local development site. If you haven't i
 
 Please read:
 
-* The one-click-django-server [README](https://github.com/aviah/one-click-django-server/blob/master/readme.md)
+* The one-click-django-server [README](https://github.com/Aviah/one-click-django-server/blob/master/README.md)
 *  The one-click-djang-dev README: [OSX](https://github.com/Aviah/one-click-django-dev-osx-el-capitan/blob/master/README.md) or [Ubuntu desktop](https://github.com/Aviah/one-click-django-dev-ubuntu-14-04-trusty/blob/master/README.md) 
 * The [Playground](playground.md), which let's you play and experiment a bit with the one-click-django project
 
