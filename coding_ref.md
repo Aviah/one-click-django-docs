@@ -10,7 +10,7 @@ This document is a quick reference. For more details about the project layout, p
 
 
 
-## Python/Django
+## Python & Django
 
 **Import module**
 
