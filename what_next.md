@@ -6,7 +6,7 @@ The following steps are suggested after you successfully installed a server with
 [Staging Environment](#staging-environment)    
 [jQuery, Bootstrap & other external libraries](#jquery-bootstrap--other-external-libraries)    
 [Add Developers](#add-developers)    
-[Security](#Security)    
+[Security](#security)    
 [Save Secrets Outside the Repository](#save-secrets-outside-the-repository)    
 [MySQL Dumps](#mysql-dumps)    
 [Backup](#backup)    
