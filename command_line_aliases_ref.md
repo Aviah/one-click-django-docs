@@ -1,6 +1,6 @@
 # Command Line Aliases Reference
 
-A few useful command line aliases for the server and the dev machine
+**A few useful command line aliases for the server and the dev machine**
 
 [Server Aliases](#server-aliases)    
 [Dev Machine Aliases](#dev-machine-aliases)    
@@ -34,8 +34,8 @@ Touch the `wsgi.py` file, so mod_wsgi reloads the python code (without the full 
 
       you@vps-machine$ site-reload
 
-**Password Protect Site**    
-Site password protection with Apache auth. Similar to `site-up`, and configures Apache to require password to access the site. The username and password credentials are saved at `site_config/django_auth.py`:
+**Password Protect the Site**    
+Site password protection with Apache auth. Similar to `site-up`, and configures Apache to require password to access the site. The username and password credentials are saved at `@vps-machine:/home/django/site_config/django_auth.py`:
 
       you@vps-machine$ site-auth-on
 
@@ -95,7 +95,7 @@ Django has it's own shell, which provides the necessary settings to work with dj
 	
 And work with your own models, API etc from this shell.
 
-*Note: to work with Wing IDE Pro (recomended!), and the Wing IDE django integration, copy `manange.py` file to the site_repo directory, and create the wing project*.
+*Note: to work with Wing IDE Pro (recommended!), and the Wing IDE django integration, copy `manange.py` file to the site_repo directory, and create the wing project*.
 
 Manage.py actually runs the commands of `django-admin`, the django shell utility, . The `manage.py` script just adds the environment variable for the django project. When you need a django-admin command that does not depends on these environment variable, simply run `django-admin`.     
 Most of the time, however, manage.py is more useful.
@@ -127,7 +127,7 @@ These are the fabric commands:
     	site_up
     	
     	
- Load the site password-protected by Apache auth:
+ Load the site password-protected by Apache auth. The usernamae and password are saved on the server at `@vps-machine:/home/django/site_config/django_auth.py`:
 	
      you@dev-machine$ fab site_auth_on
 
