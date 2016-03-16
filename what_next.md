@@ -3,19 +3,19 @@
 
 The following steps are suggested after you successfully installed a server with one-click-django-server, a development environment with one-click-django-dev, and had several successful deployment cycles.
 
-[Staging Environment]()    
-[Jquery, bootstrap & other external libraries]()    
-[Add developers]()    
-[Improve the firewall]()    
-[Save Secrets Outside the Repository]()    
-[MySQL Dumps]()    
-[Backup]()    
-[Separate the Single Server to a Webserver & DB Server]()    
-[Https]()    
-[CDN]()    
+[Staging Environment](#staging-environment)    
+[jQuery, Bootstrap & other external libraries](#jquery-bootstrap--other-external-libraries    
+[Add Developers](#add-developers)    
+[Security](#Security)    
+[Save Secrets Outside the Repository](#save-secrets-outside-the-repository)    
+[MySQL Dumps](#mysql-dumps)    
+[Backup](#backup)    
+[Separate the Single Server to a Webserver & DB Server](#separate-the-single-server-to-a-webserver--db-server)    
+[Https](#https)    
+[CDN](#cdn)    
 
 
-### Staging environment
+## Staging Environment
 
 You can use one-click-django-server to install a staging environment. Then repository chain would be dev >> staging >> production. If you push to production only from staging, then only tested code is deployed to production. However, staging can be used for testing and experiments with non production code, so you may want another staging machine, or still deploy to stage and then to production from the dev machine.    
 
@@ -28,7 +28,7 @@ A few tips:
 + Add another settings file, like settings_stage.py, similar to settings_dev.py and settings_production.py 
 
 
-### Jquery, bootstrap & other external libraries
+## jQuery, Bootstrap & other external libraries
 
 Most common libraries have a free CDN, which is faster, free, and probably available in the browser cache already. To use these libraries in your site, add the links to the base template, where they will be available to every template that extends the base template. Here in an example for jQuery and Bootstrap:
 
@@ -45,7 +45,7 @@ Many javascript libraries, including bootstrap, require jQuery, so it's a good i
     
 *Note: You can serve a copy of most external libraries with your site static files. But there are many advantages for using the public CDN: it's faster, you don't pay for the bandwidth, and for  most common libraries like bootstrap and jQuery, the latest version is probably already cached in the user's browser, so your site will load faster*
 
-### Add developers
+### Add Developers
 
 
 The project is saved in the django user home directory on the server, so any additional developer can access it with the django account.   
@@ -71,7 +71,7 @@ If you add a **new** user with ssh access, you need to add this user to the sshg
 *sshgroup is a group, created with the setup script. Replace newuser with the actual new username*
     
 
-### Securiy
+### Security
 
 Security in this project is really basic, and there are lot of good resources, books, websites, checklists, videos and tools, about how to improve the website security. This is an ongoing effort.
 
