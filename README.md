@@ -13,7 +13,7 @@ The goal is to build as simply as possible a working django enviroment:
 * For one developer.     
 
 If you are new to django, this simple setup can save you a lot of hussle, and yet lets you develop and deploy to a real website ASAP.    
-Once your are comfortable with django and the environment, you can extend and scale (see [What's Next](what-next.md)).
+Once your are comfortable with django and the environment, you can extend and scale (see [What's Next](what_next.md)).
 
 You need to install the server, and the local development site. If you haven't installed it already, it's easy, the setup scripts auto-install (almost) everything:    
 
