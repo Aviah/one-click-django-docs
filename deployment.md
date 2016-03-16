@@ -125,7 +125,7 @@ Similarily to the deployment of js,css, this will run `collectstatic` on the ser
 
 *Note: If you find yourself uploading resources frequently, you can add a fabric command to upload and deploy. Edit the fabfile in your home directory.*
 
-*Note: If you want to save images in the repository, and upload them with git, see the project refernce [Static Files:Images](project_ref.md#staic-files-images-or-other-media)*
+*Note: If you want to save images in the repository, and upload them with git, see the project refernce [Static Files: Images](project_ref.md#staic-files-images-or-other-media)*
 
 ## Deployment of Database Schema Changes
 
