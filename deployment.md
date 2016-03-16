@@ -1,35 +1,40 @@
 #Deployment
 
 
-[Overview]()    
-[Before You Deploy]()    
-[Deployment of Python,HTML Changes]()   
-[Deployment of Javascript, CSS Changes]()    
-[Deployment of Database Schema Changes]()    
+[Overview](#overview)    
+[Before You Deploy](#before-you-deploy)    
+[Deployment of Python, HTML Changes](#deployment-of-pythonhtml-changes)   
+[Deployment of javascript, CSS Changes](#deployment-of-js-css-changes) 
+[Deployment with Images, Media](#deployment-with-images--or-ther-media-resources)   
+[Deployment of Database Schema Changes](#deployment-of-database-schema-changes)    
 
 
 
-### Overview
+## Overview
 
-Deployment is fairly simple, since the whole site is stored on one server. All deployment actions run on this single server: code updates, collect static files, and db migrations. 
+Deployment is fairly simple, since the whole site is stored on a single server.   
+All the deployment actions run on this one server: code updates, `collectstatic` for static files, and db migrations. 
    
-Deployment is just pushing master to the production remote at **@vps:/home/django/mysite.git**, and reload the code to mod_wsgi. So the master branch should always be (closing) stable. Develop new code in a separate branch, and merge to master when OK. 
+To deploy, you push the master branch to the production remote at `@vps:/home/django/mysite/site_repo`, and reload the code to mod_wsgi. 
+The master branch should always be (closing) stable.     
+Develop the new code in a separate branch, and merge to master when done. 
 
-The ongoing development pushes to a central repository go to the bare repository, on the VPS: at **@vps:/home/django/mysite.git**. This is the dev repo origin remote. Simply use git push.    
-After you pushed a new master that is ready for production with git push, use deploy to push it to the website repo, where the code is actually loaded to Apache mod_wsgi.
+The on-going development progress is pushed to the central project repository at `@vps:/home/django/mysite.git`.    
+This is the dev repo `origin` remote, which is separated from the production site repo. So you can push often to save your progress to this repo. Simply use `git push`.
+    
+After you pushed a new master version that is ready for production, deploy  it to the website repo, where the code is actually loaded to Apache mod_wsgi.
 
 
-The deployment commands are provided with fabric. The fabfile is saved at your home directory.
+*Note: Deployment commands are provided with fabric. The fabfile is saved at your home directory. To use fabric you need a public ssh key without a passphrase.*
 
 
 ## Before You Deploy
 
-Check that everything works on the local Nginx/Aapache mod_wsgi site. If js or css changed, you should run:
+Check that everything works on the local Nginx & Aapache mod_wsgi site. If js or css changed, you should run:
 
      you@dev-machine$ python ~/myprojects/mysite/manage.py collectstatic
      
-If the db schema changed (models or custom schema sql) you should run:
-
+If the database schema changed (models or custom schema sql) you should run:
 
      you@dev-machine$ python ~/myprojects/mysite/manage.py makemigrations
      you@dev-machine$ python ~/myprojects/mysite/manage.py migrate
@@ -41,15 +46,18 @@ Then reload the site:
     you@dev-machine$ site-reload (or site-up)
     
     
-Test the site. Once everything works, and all changes are commited, push to the main repository:
+Test the site.    
+If everything works, and all changes are commited, push to the main repository:
  
  	you@dev-machine: git push
  		
- Now you are ready to deploy the website repo.
+Now you are ready to deploy the website repo.
+ 
+*Note: In a more advanced stage, you would run a tests suite before deployment*
 
       
 
-## Deployment of Python,HTML Changes
+## Deployment of Python, HTML Changes
 
 Changes to Deploy| Status
 --------|-------
@@ -65,7 +73,7 @@ If the only commited changes from last deployment are changes in Python or HTML:
     
     
 
-This will push to production master and reload mod_wsgi.
+This will push to production/master, and reload mod_wsgi.
 
 
 ## Deployment of js, css Changes
@@ -77,13 +85,13 @@ js, css|Yes
 Images, Media|No
 DB Schema|No
 
-If you commited changes to js or css since the last deplyoment: 
+If you commited changes to javascript or css since the last deplyoment: 
 
 	you@dev-machine$ fab deploy:True 
 
-This will run the same as fab deploy, but will also run collectstatic.
+This will run the same as fab deploy, but will also run `collectstatic`.
 
-*Note: It's safe to deploy with collectstatic even if there is no change to js or css files. Collectstatic checks the static files, and if nothing changed it will keep the current files.*
+*Note: It's safe to deploy with `collectstatic` even if you didn't change any js or css file. `collectstatic` checks the static files, and if nothing changed it will keep the current files.*
 
 
 
@@ -98,24 +106,23 @@ DB Schema|No
 
 
 
-Images (and other non js,css media) resources are saved outside the repository, so first upload new images or changed images to the server:
+Images (and other non js,css media) resources are not saved in the repository.    
+Upload the new images, or the changed images, to the server:
 
 
     you@dev-machine: scp ~/myprojects/mysite/media_resources/new_img.png django@PUB.IP.IP.IP:~/mysite/media_resources/
     
     
-   *Replace PUB.IP.IP.IP with the actual server public IP, and myprojects, mysite with the actual directories name.*
+   *Replace PUB.IP.IP.IP with the actual server public IP, and `myprojects`, `mysite` with the actual name of the project directories.*
    
 
-
-After all the site images are copied to the server:
+After all the site images were copied to the server:
 
 	you@dev-machine$ fab deploy:True
 	
-Similarily to js,css deployment, this will run collectstatic on the server, which will update the site static files with the new or changed images.
+Similarily to the deployment of js,css, this will run `collectstatic` on the server, and update the static files with the new images.
 
-*Note: If you find yourself uploading resources frequently, you can add a fabric command to the fabfile in your home directory.*
-
+*Note: If you find yourself uploading resources frequently, you can add a fabric command to the fabfile (in your home directory).*
 
 *Note: If you want to save images in the repository, and upload them with git, see the static files details in the [Project Reference](project_ref.md)
 
