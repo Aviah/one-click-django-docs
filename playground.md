@@ -1,12 +1,11 @@
 #Playground
 
 
-**Play and and experiment a bit with the one-click-django environment** 
+**Play and experiment a bit with the one-click-django environment** 
 
 ## Environment
 
-Make sure you installed the server, and the local development site.    
-If you haven't already, it's easy, the setup scripts auto-install (almost) everything:    
+Make sure you installed the server, and the local development site. If you haven't installed it already, it's easy, the setup scripts auto-install (almost) everything:    
 
 * Production website:[ Django site on Ubuntu 14.04 Server](https://github.com/Aviah/one-click-django-server)
 * Develop & Deploy:  on [OSX El-Capitan](https://github.com/Aviah/one-click-django-dev-osx-el-capitan), or [Ubuntu 14.04 Trusty desktop](https://github.com/Aviah/one-click-django-dev-ubuntu-14-04-trusty)

@@ -1,37 +1,68 @@
 #One-Click-Django Docs
 
-## Docs Overview
+## Intro
 
 
-The one-click-django scripts goal is to build as simply as possible a django enviroment: single server, single site development environment, for one developer.     
-If you are new to django, this deployment can save you a lot of hussle, and yet let you develop and deploy to a full real website ASAP. 
+### The one-click-django project goal
 
-After you read the one-click-django [Server ReadeMe](https://github.com/aviah/one-click-django-server/master/readme.md) and the dev ReadMe for [OSX](https://github.com/aviah/one-click-django-dev-osx-el-capitan/master/readme.md), or [Ubuntu 14.04](https://github.com/aviah/one-click-django-dev-ubuntu-14-04-trusty/master/readme.md), and then you can use these additional docs.
+To build as simply as possible a working django enviroment:
 
-**Playground**: The [Playground](playground.md) let's you play and experiment a bit with the one-click-django project, both development machine and the server.
+* Single server
+* Single site development environment
+* For one developer.     
 
-**Tutorial**: If you are new to django, continue with the one-click polls tutorial. The Tutorial implements the django opfficial tutorial, to the one-click-django project, with git, and real deployment! Start with [Part 1: Create the Polls App](tutorial_part1.md)
+If you are new to django, this simple setup can save you a lot of hussle, and yet lets you develop and deploy to a real website ASAP.    
+Once your are comfortable with django and the environment, you can extend and scale (see [What's Next](whats-next.md)).
 
-**Reference**: Quick reference with [Coding Refence](coding_ref.md), [Deployment](deployment.md), and [Command Line Aliases Reference](command_line_aliases_ref.md) about how to use the project. The [Project Reference](project_ref.md) provides a few more details   
+You need to install the server, and the local development site. If you haven't installed it already, it's easy, the setup scripts auto-install (almost) everything:    
 
-**Advanced**: [What's Next](what_next.md) and [Multiple Site](multiple_sites.md) are useful when you want to move to the next steps, more developers, more sites, https, multiple servers, CDN etc
+* Production website:[ Django site on Ubuntu 14.04 Server](https://github.com/Aviah/one-click-django-server)
+* Develop & Deploy:  on [OSX El-Capitan](https://github.com/Aviah/one-click-django-dev-osx-el-capitan), or [Ubuntu 14.04 Trusty desktop](https://github.com/Aviah/one-click-django-dev-ubuntu-14-04-trusty)
 
-And of course, the [django documentation](https://docs.djangoproject.com/en/1.8/) covers the enourmously feature rich django framework, and all the options it suggests. The django docs, which go above and beyond, are awesome. 
+### Before you continue with the project docs:
+
+Please read:
+
+* The one-click-django-server [README](https://github.com/aviah/one-click-django-server/master/readme.md)
+*  The one-click-djang-dev README: [OSX](https://github.com/Aviah/one-click-django-dev-osx-el-capitan/blob/master/README.md) or [Ubuntu desktop](https://github.com/Aviah/one-click-django-dev-ubuntu-14-04-trusty/blob/master/README.md) 
+* The [Playground](playground.md), which let's you play and experiment a bit with the one-click-django project
+
+
+If you are new to django, why not take our version to the official django polls tutorial. It implments the polls app in a real development-deployment-production environment, with git.    
+When you finish this tutorial, the polls app will run on the real website at `www.yourdommain.com/polls`.    
+Start here [Django Tutorial with Deployment](https://github.com/Aviah/one-click-django-polls-tutorial) 
+
+
+## Docs at a Glance
+
+
+###Reference
+[Coding Refence](coding_ref.md)    
+[Deployment](deployment.md)    
+[Command Line Aliases Reference](command_line_aliases_ref.md)    
+[Project Reference](project_ref.md), provides a lot of details   
+
+###Advanced:
+When you want more developers on the project, https, multiple servers, CDN etc.
+
+[What's Next](#what_next.md)    
+[Multiple Site](multiple_sites.md)
 
 
 
-## The Project Docs
+## Table of Contents
 
 
-**Project Reference**
+###Project Reference
 
 
-[Coding Refence](coding_ref.md)   
-A quick refence how to use the project when you code: imports, settings, templates etc
+[Coding Reference](coding_ref.md)   
+A quick reference how to use the project when you code: imports, settings, templates, etc.
 
 [Deployment](deployment.md)   
-Simple deployment recipes with the fabric commands, from the dev machine.    
-How to use these commands to deploy to production Python & HTML code, js & css, and db schema changes. Also some fabric commands for website actions like maintenance and password protect the site
+Simple deployment recipes with the fabric commands.    
+Deploy Python, HTML, javascript, css, and migrations.    
+Also some additional fabric commands for common website admin.
 
 [Command Line Aliases Reference](command_line_aliases_ref.md)  
 The project includes a few useful command line aliases for the server and the dev machine
@@ -40,7 +71,7 @@ The project includes a few useful command line aliases for the server and the de
 More details about the project's directories & files layout, git repositories, production & development settings, static files (css,javascript,images, media), django admin, cache and the web servers
 
 [What's Next](what_next.md)  
-The goal of this project is to provide a complete yet simple production, development and deplyoment environment on one server for one developer. The What's Next document provides overview of some more advanced topics: staging, external libraries e.g. jquery & bootstrap, add developers, save secrets outside the repository, MySQL dumps, backup, separate webserver & database server, https, CDN
+The goal of this project is to provide a complete yet simple production, development and deplyoment environment. This document provides an overview of some more advanced topics: staging, external libraries, add more developers, save secrets outside the repository, MySQL dumps, backup, separate webserver & database server, https, CDN and so on.
 
 [Multiple Site](multiple_sites.md)   
 How to use the one-click-django scripts to handle multiple websites from the same development machine
