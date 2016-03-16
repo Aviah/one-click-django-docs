@@ -2,8 +2,11 @@
 
 A few useful command line aliases for the server and the dev machine
 
-[Server Aliases](#server-aliases)
-[Dev Machine Aliases](#dev-machine-aliases)
+[Server Aliases](#server-aliases)    
+[Dev Machine Aliases](#dev-machine-aliases)    
+[Django Shell Commands](#django-shell-commands)    
+[Dev Fabric Commands](#dev-fabric-commands)    
+
 
 ## Server Aliases
 
