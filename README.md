@@ -5,10 +5,11 @@
 
 ### The one-click-django project goal
 
-To build as simply as possible a working django enviroment:
+The goal is to build as simply as possible a working django enviroment:
 
 * Single server
-* Single site development environment
+* Single local development site
+* Simple Deployment
 * For one developer.     
 
 If you are new to django, this simple setup can save you a lot of hussle, and yet lets you develop and deploy to a real website ASAP.    
@@ -23,7 +24,7 @@ You need to install the server, and the local development site. If you haven't i
 
 Please read:
 
-* The one-click-django-server [README](https://github.com/aviah/one-click-django-server/master/readme.md)
+* The one-click-django-server [README](https://github.com/aviah/one-click-django-server/blob/master/readme.md)
 *  The one-click-djang-dev README: [OSX](https://github.com/Aviah/one-click-django-dev-osx-el-capitan/blob/master/README.md) or [Ubuntu desktop](https://github.com/Aviah/one-click-django-dev-ubuntu-14-04-trusty/blob/master/README.md) 
 * The [Playground](playground.md), which let's you play and experiment a bit with the one-click-django project
 
@@ -43,10 +44,10 @@ Start here [Django Tutorial with Deployment](https://github.com/Aviah/one-click-
 [Project Reference](project_ref.md), provides a lot of details   
 
 ###Advanced:
-When you want more developers on the project, https, multiple servers, CDN etc.
+When you want https, multiple servers, CDN, add more developers to the project, etc.
 
-[What's Next](#what_next.md)    
-[Multiple Site](multiple_sites.md)
+[What's Next](what_next.md)    
+[Multiple Sites](multiple_sites.md)
 
 
 
