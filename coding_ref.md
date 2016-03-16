@@ -2,42 +2,38 @@
 
 This document is a quick reference. For more details about the project layout, production and development settings, static files, etc., see Project_Ref.
 
-[Python & Django]()    
-[Settings]()    
-[Logging]()     
-[Cache]()     
-[Command Line]()
+[Imports](#imports)    
+[Templates](#templates)    
+[Settings](#settings)    
+[Logging](#logging)     
+[Cache](#cache)     
+[Command Line](#command-line)
 
 
 
-## Python & Django
+## Imports
 
-**Import module**
-
+Import a project module:
 	
     from site_repo import foo
 
-**Import from a module**
+Import from a project module:
 
     from site_repo.foo import bar
 
   
-**Import settings**
-
-The conventional django settings import:
+Import settings (conventional django-settings import):
 
     from django.conf import settings
     
-**Relative Imports**
-
-Conventional relative imports:
+Relative Imports (conventional relative imports):
 
 
 	from . import foo
 	from ..baz import bar
     
   
-**Templates**
+##Templates
 
 Templates are saved in the `site_repo/templates` directory.
 
@@ -56,7 +52,7 @@ To extend the base template, a new template should start with:
 *Note: The `extends` template tag is not limited, of course, to the base template. Django allows to build a complex hierarchical "template inheritence". See the django docs*
 
 
-**Css & javascript Files in Templates**
+###Css & javascript Files in Templates
 
 If the template uses static resources - like js, css, images - it should load the static template tag.    
 Load the tag once, at the beginning of the template:
@@ -80,7 +76,7 @@ Use a javascript file in a template:
 	<script src="{% static 'bar.js' %}" type="text/javascript">
 
     
-**Images in Templates**
+###Images in Templates
 
 Load the static template tag.    
 Load the tag once, at the beginning of the template:
