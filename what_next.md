@@ -4,7 +4,7 @@
 The following steps are suggested after you successfully installed a server with one-click-django-server, a development environment with one-click-django-dev, and had several successful deployment cycles.
 
 [Staging Environment](#staging-environment)    
-[jQuery, Bootstrap & other external libraries](#jquery-bootstrap--other-external-libraries    
+[jQuery, Bootstrap & other external libraries](#jquery-bootstrap--other-external-libraries)    
 [Add Developers](#add-developers)    
 [Security](#Security)    
 [Save Secrets Outside the Repository](#save-secrets-outside-the-repository)    
