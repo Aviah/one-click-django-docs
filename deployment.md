@@ -15,17 +15,17 @@
 Deployment is fairly simple, since the whole site is stored on a single server.   
 All the deployment actions run on this one server: code updates, `collectstatic` for static files, and db migrations. 
    
-To deploy, you push the master branch to the production remote at `@server:/home/django/mysite/site_repo`, and reload the code to mod_wsgi. 
+To deploy, you push the master branch to the production remote at `@server:/home/django/mysite/site_repo`, and reload the code to mod_wsgi.    
 The master branch should always be (closing) stable.     
-Develop the new code in a separate branch, and merge to master when done. 
+As you add or update your code, work in a separate branch, and merge to master when something is stable and ready for production. 
 
 The on-going development progress is pushed to the central project repository at `@server:/home/django/mysite.git`.    
-This is the dev repo `origin` remote, which is separated from the production site repo. So you can push often to save your progress to this repo. Simply use `git push`.
+This is the `origin` remote of the development repository. This repo is separated from the production website. You can push often to save your progress to this repo. Simply use `git push` or `git push --all`.
     
-After you pushed a new master version that is ready for production, deploy  it to the website repo, where the code is actually loaded to Apache mod_wsgi.
+After you pushed a new master version that is ready for production, deploy  it to the website.
 
 
-*Note: Deployment commands are provided with a fabric fabfile. The fabfile is saved at your home directory. To use fabric you need a public ssh key without a passphrase.*
+*Note: Deployment commands are provided with a fabric fabfile. The fabfile is saved at your home directory. To use fabric, you need a public ssh key without a passphrase.*
 
 
 ## Before You Deploy
