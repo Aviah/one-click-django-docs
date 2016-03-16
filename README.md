@@ -13,7 +13,7 @@ The goal is to build as simply as possible a working django enviroment:
 * For one developer.     
 
 If you are new to django, this simple setup can save you a lot of hussle, and yet lets you develop and deploy to a real website ASAP.    
-Once your are comfortable with django and the environment, you can extend and scale (see [What's Next](whats-next.md)).
+Once your are comfortable with django and the environment, you can extend and scale (see [What's Next](what-next.md)).
 
 You need to install the server, and the local development site. If you haven't installed it already, it's easy, the setup scripts auto-install (almost) everything:    
 
@@ -38,12 +38,12 @@ Start here [Django Tutorial with Deployment](https://github.com/Aviah/one-click-
 
 
 ###Reference
-[Coding Refence](coding_ref.md)    
+[Coding Reference](coding_ref.md)    
 [Deployment](deployment.md)    
 [Command Line Aliases Reference](command_line_aliases_ref.md)    
 [Project Reference](project_ref.md), provides a lot of details   
 
-###Advanced:
+###Advanced
 When you want https, multiple servers, CDN, add more developers to the project, etc.
 
 [What's Next](what_next.md)    
@@ -58,7 +58,7 @@ When you want https, multiple servers, CDN, add more developers to the project, 
 
 
 [Coding Reference](coding_ref.md)   
-A quick reference how to use the project when you code: imports, settings, templates, etc.
+A quick reference, how to use the project when you code: imports, settings, templates, etc.
 
 [Deployment](deployment.md)   
 Simple deployment recipes with the fabric commands.    
@@ -72,7 +72,7 @@ The project includes a few useful command line aliases for the server and the de
 More details about the project's directories & files layout, git repositories, production & development settings, static files (css,javascript,images, media), django admin, cache and the web servers
 
 [What's Next](what_next.md)  
-The goal of this project is to provide a complete yet simple production, development and deplyoment environment. This document provides an overview of some more advanced topics: staging, external libraries, add more developers, save secrets outside the repository, MySQL dumps, backup, separate webserver & database server, https, CDN and so on.
+This document provides an overview of some of the more advanced topics: staging, external libraries, add more developers, save secrets outside the repository, MySQL dumps, backup, separate webserver & database server, https, CDN and so on.
 
 [Multiple Site](multiple_sites.md)   
 How to use the one-click-django scripts to handle multiple websites from the same development machine
