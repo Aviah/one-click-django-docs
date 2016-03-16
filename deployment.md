@@ -4,7 +4,7 @@
 [Overview](#overview)    
 [Before You Deploy](#before-you-deploy)    
 [Deployment of Python, HTML Changes](#deployment-of-pythonhtml-changes)   
-[Deployment of javascript, CSS Changes](#deployment-of-js-css-changes) 
+[Deployment of javascript, CSS Changes](#deployment-of-js-css-changes)    
 [Deployment with Images, Media](#deployment-with-images--or-ther-media-resources)   
 [Deployment of Database Schema Changes](#deployment-of-database-schema-changes)    
 
