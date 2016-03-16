@@ -64,7 +64,7 @@ Django uses the `static` template tag to load the correct file:
 * The static file in production
 * The original file from the repository, during development.
 
- See the project reference for [Static Files](project_ref.md#staic-files-javascriptcss)
+See the project reference for [Static Files](project_ref.md#staic-files-javascriptcss)
 	
 
 Use a css file in a template:
@@ -93,7 +93,6 @@ An image from the `mysite/media_uploads` directory, that should be used for the 
 
 The image name should follow the `}}` brackets, **without** any spaces.
 
-*Note: the `MEDIA_URL` is used for uploads, but was not renamed to something like "MEDIA_UPLOADS" to respect django defaults*
 
 ## Settings
 
@@ -109,7 +108,7 @@ Keep the specific **development** settings in:
 
 	 site_repo/settings_dev.py
 	 
-All other settings that are shared and **the same for both production & development** (but different from the django defaults):
+All other settings that are shared and **the same for both production & development** (but different from the django defaults) in:
 
 	 site_repo/settings.py
 	 
@@ -127,39 +126,39 @@ The actual settings when the website runs are loaded, in the following order:
 
 Things to remember:
 
-* Permanenet settings changes go to the **repository**, and should be commited as the rest of the code.   
+* A permanent settings change goes to the **repository**, and should be commited as the rest of the code.   
 * Adjust the environment with the `site_config` directory.
 * `site_config` on production: should contain just `settings_production.py` (and maybe `secrets.py`).
-* `site_config` on dev machine: `settings_dev.py` and `settings_tmp.py`. 
+* `site_config` on a dev machine: `settings_dev.py` and `settings_tmp.py`. 
 
 ### Permanent settings change, in the repository
    
 If you want to update the website with changes that you made in the repository to `settings_production.py` or `settings_dev.py`, you should copy the changed file to site_config, and reload the site. 
 The deployment fabric script makes this copy when you deploy. On the dev machine you will have to do that manually:
 
-		you@dev-machine: cd ~/myprojects/mysite/
-		you@dev-machine: cp site_repo/settings_dev.py site_config/
-		you@dev-machine: site-reload
+	you@dev-machine: cd ~/myprojects/mysite/
+	you@dev-machine: cp site_repo/settings_dev.py site_config/
+	you@dev-machine: site-reload
 
 ### Ad-hoc settings change
 		
 For **ad-hoc** changes, e.g. turning `DEBUG` on/off, turning `logging` on/off, and other tests and experiments,  just edit the `site_config settings` files:
 		
-		you@dev-machine: cd ~/myprojects/mysite/
+	you@dev-machine: cd ~/myprojects/mysite/
 		
 Then edit the files:
 
-			you@dev-machine: nano site_config/settings_dev.py
+	you@dev-machine: nano site_config/settings_dev.py
 			
 Or, to change some settings and keep the original `settings_dev.py` as is:
 
-			you@dev-machine: nano site_config/settings_tmp.py
+	you@dev-machine: nano site_config/settings_tmp.py
 			
 And reload:
 		
-			you@dev-machine: site-reload
+	you@dev-machine: site-reload
 
-For more details see the [Deployment](#deployment.md), and the project reference for [Production & Development Settings](project_ref.md#production--development-settings)
+For more details see [Deployment](deployment.md), and the project reference for [Production & Development Settings](project_ref.md#production--development-settings)
 
 *Note: The site actually tries to load another setting file, if exists: `site_config/secrets.py`. This is useful if you want to keep secrets outside the repository (e.g. if you open source the project on github).
 See [What's Next](what_next.md)*
@@ -255,7 +254,7 @@ And probably also:
 	
 *Note: If you use an IDE, it's usually lets you configure the default environment variables for the python shell. In Wing IDE (which I use, and it's awesome), add this environment variable to the project properties.*
 
-For more details, see the [project reference](project_ref.md)
+For more details, see the [Project Reference](project_ref.md)
 
 Support this project with my affiliate link| 
 -------------------------------------------|
