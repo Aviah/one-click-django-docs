@@ -92,12 +92,13 @@ On Ubuntu:
 ## Git Repositories
 
 ###Origin Remote 
-On the server, a bare git repository at `@server:/home/django/site_repo.git`. This is the project central repo, which is separated from the website code, so you can push often to save the progress of your work.     To push everything, from your local `site_repo`:
+On the server, a bare git repository `@server:/home/django/site_repo.git`. This is the project central repo, which is separated from the website code, so you can push often to save the progress of your work.     To push everything, from your local `site_repo`:
 
 	you@dev-machine: git push --all remote origin
 
 ###Production Remote  
-On the server, the production website repository. This is the code that mod_wsgi loads. The repo is at `@server:/home/django/mysite/site_repo`   
+On the server, the production website repository. This is the code that mod_wsgi loads.     
+The repo is `@server:/home/django/mysite/site_repo`.   
 Do not push directly to this repository, but rather use [Deployment](deployment.md)
 
 
