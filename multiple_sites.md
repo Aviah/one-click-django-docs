@@ -21,14 +21,14 @@ However, it's fairly easy to adjust your setup to auto-install and develop multi
 
 The easiest solution is a dedicated VPS per site. With the auto-install script, to build a dedicated VPS server for each website. 
 
-You can configure the same VPS to serve multiple sites, but when a decent VPS costs $10 a month, IMHO it just doesn't worth the time and effort, unless you serve a lot of small sites, and the the savings from using one VPS for all the websites is significant.
+You can configure the same VPS to serve multiple sites, but when a decent VPS costs $10 a month, IMHO it just doesn't worth the time and effort, unless you serve a lot of sites, and the the savings from using one VPS for all the websites is substancial.
 
 ### Dev Machine
 It's possible to install virtualenv, create a separate environment for each site, and a separate virtual host in the webservers. I suggest anothersolution which to me seems simpler: save the config files of each site, and when you switch sites just run a script that copies the config files of the current site, and restart the webservers.
 
 
 
-** The following doc uses mysite1, mysite2, as the names of the two sites**
+**The following doc uses mysite1, mysite2, as the names of the two sites**
 
 
 If you already have a development environment for another django site on your dev machine, run the following steps
@@ -38,7 +38,7 @@ If you already have a development environment for another django site on your de
 
 **Config Files**
 
-Add "etc" directory to the repository at ~/myprojects/mysite1/site_repo.   
+Add `etc` directory to the repository at `~/myprojects/mysite1/site_repo`.   
 To this directory, copy the following files:
 
 On a Mac:
@@ -51,7 +51,7 @@ On a Mac:
 6. ~/.django_site_aliases
 7. ~/.fabricrc
 
-On Ubuntu:
+On Ubuntu desktop:
 
 1. /usr/lib/python2.7/dist-packages/django_projects.pth
 2. /etc/nginx/nginx.conf
@@ -63,11 +63,12 @@ On Ubuntu:
 8. ~/.fabricrc
 
 
-When all the files copied to the repository /etc directory, add the files and commit.
+If you made configuration changes for this site, save these file to the repository `etc` directory as well.
+
+Add the files and commit.
 
 *Note: If you don't want to keep these files in a repo, copy to another directory, e.g. ~/myrpojects/mysite1/etc/*
 
-*Note: If you made other configuration changes for this site, to other files, save these file to the repository etc directory as well*
 
 
 **Database Dump**
@@ -76,22 +77,23 @@ Make a dump of mysite1 databases:
 
 		you@dev-machine$ mysqldump -uroot -p --all-databases --add-drop-database > ~/myprojects/mysite1/mysite1_dump.sql
 
-### Install Development Environment for mysite2
+### Install the Development Environment for mysite2
 
 At this point you have:
  
-1. Two separate VPS, each with a one-click-django-server website: one for mysite1, the other for mysite2.
-2. A development machine that is configured to the 1st one-click-django-server mysite1. 
-3. All the config files for mysite1 are saved and commited, and you made a database dump.
+1. Two separate VPS, each with a one-click-django-server website: one for `mysite1`, the other for `mysite2`.
+2. A development machine that is configured to the 1st one-click-django-server `mysite1`. 
+3. All the config files for `mysite1` are saved and commited, and you made a database dump.
 
-Now continue and install the development environment for the second site mysite2, on the same development machine, with one-click-django-dev.    
-When the dev environment is complete, the local django site at 127.0.0.1 (or 127.0.0.1:8000 with django development server) should show mysite2.
+Now continue and install the development environment for the second site `mysite2`, on the same development machine, with one-click-django-dev: on [OSX El-Capitan](https://github.com/Aviah/one-click-django-dev-osx-el-capitan), or [Ubuntu 14.04 Trusty desktop](https://github.com/Aviah/one-click-django-dev-ubuntu-14-04-trusty)
+   
+When the dev environment installation is complete, the local django site at `127.0.0.1` (or `127.0.0.1:8000` with django development server) should show `mysite2`.
 
 ### Save Config Files and DB Dump of mysite2
 
-Now add etc directory to the 2nd site repository, and copy the files, similarily to what you saved to the first site.
+Now add `etc` directory to the 2nd site repository, and copy the files, similarily to what you saved to the first site.
 
-Add the file and commit.
+Add the files and commit.
 
 Make a dump of the database:
 
@@ -100,7 +102,8 @@ Make a dump of the database:
 
 ### Write a switch script between mysite1 and mysite2
 
-Write a bash script that accepts a site name, and copies it's config files to the correct directories, and restart webservers. You can call the script switch_site.sh.
+Write a bash script that accepts a site name, and copies it's config files to the correct directories, and restart webservers.    
+You can call the script `switch_site.sh`.
 
 Here are suggested templates.
 
@@ -141,21 +144,21 @@ On Ubuntu:
 
 
 
-To switch from mysite1 to mysite2:
+To switch from `mysite1` to `mysite2`:
 
 	you@dev-machine$ mysqldump -uroot -p --all-databases --add-drop-database > ~/myprojects/mysite1/mysite1_dump.sql
 	you@dev-machine$ mysql -uroot -p < ~/myprojects/mysite2/mysite2_dump.sql
 	you@dev-machine: ./switch_site.sh mysite2
 		
 		
-To switch from mysite2 to mysite1:
+To switch from `mysite2` to `mysite1`:
 
 	you@dev-machine$ mysqldump -uroot -p --all-databases --add-drop-database > ~/myprojects/mysite2/mysite2_dump.sql
 	you@dev-machine$ mysql -uroot -p < ~/myprojects/mysite1/mysite1_dump.sql
 	you@dev-machine: ./switch_site.sh mysite1
 		
 		
-After you switch, restart the terminal (or use source).
+After you switch, restart the terminal (or use `source`), for the aliases.
 
 Support this project with my affiliate link| 
 -------------------------------------------|
