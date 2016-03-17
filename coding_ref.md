@@ -3,7 +3,7 @@
 This document is a quick reference. For more details about the project layout, production and development settings, static files, etc., see Project_Ref.
 
 [Imports](#imports)    
-[Templates](#templates)    
+[Templates](#imports)    
 [Settings](#settings)    
 [Logging](#logging)     
 [Cache](#cache)     
