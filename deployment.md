@@ -127,7 +127,7 @@ Similarily to the deployment of js,css, this will run `collectstatic` on the ser
 
 *Note: If you want to save images in the repository, and upload them with git, see the project refernce [Static Files: Images](project_ref.md#staic-files-images-or-other-media)*
 
-***Managing Images in the repository: **
+**Managing Images in the repository:**
 By default, the project images are managed **outside** the repository. This is really a personal preference. If you want to save images **in** the repository, just add an images directory to the repository to `mysite/site_repo/static/images/`, copy the images to this directory, push and deploy with `fab deploy:True`.
 Since `collectstatic` picks the files in `mysite/site_repo/static/`, it will also pick the `images`.
 
