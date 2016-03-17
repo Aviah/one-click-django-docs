@@ -15,36 +15,40 @@
 
 ## Project Layout
 
-The specific layout is a mixture of common practices and personal preferences. However, django is flexible and everything could be easily changed:
+The project layout is a mixture of common practices and personal preferences. 
+However, django is flexible and everything could be easily changed.
 
 
 **Production**
 
     /home/django/
     |
-    |- site_repo.git  (bare repository, dev pushes to this repo)
+    |- site_repo.git  (bare repository, dev pushes to this as the "origin" remote)
     |
     |- mysite (the project directory)
         |
         |- manage.py (the django utility for the project)
         |
+        |- db_backup (database dumps directory)        
+        |
         |- logs (logs directory)
         |   |
-        |   |- main.log (production log, use logging.getLogger("main").info("production msg"), logs everything from log level info)
-        |   |- debug.log (use logging.debug("debug msg"), logs when DEBUG_LOG=True)
-        |   |- debug_db.log (django logs all db access, logs when DEBUG_DB_LOG=True)  
+        |   |- main.log (production log, to log use logging.getLogger("main").info("production msg"), logs everything from log level info)
+        |   |- debug.log (to log use logging.debug("debug msg"), logs when DEBUG_LOG=True)
+        |   |- debug_db.log (django log, all db interactions, logs when DEBUG_DB_LOG=True)  
         |
         |- media_resources (pre-prepared site media directory, e.g. logo, icons, etc. Source directory for collectstatic, allows to keep images outside the repository)
         |
-        |- media_uploads (media directory, not a repository, for user uploaded resources, e.g. avatars)
+        |- media_uploads (media directory, for user uploaded resources, e.g. avatars)
         |
-        |- site_config (optional settings directory on the python path, but not in a repository)
+        |- site_config (environment specific settings directory on the python path)
         |   |
         |   |- settings_production.py (settings.py will try to import this file, make sure it exists in production)
         |   |- settings_tmp.py (settings.py will try to import this file, useful for ad-hoc settings during dev)
         |   |- site_auth.py (credentials for password-protected site via Apache auth, if used)
+        |   |- secrets.py (to save passwords, SECRET_KEY, outside the repository. Useful when the repository is public)
         |
-        |- site_repo (git repo, pulls from site_repo.git. This is the actual website code loaded to mod_wsgi)
+        |- site_repo (the website git repo. The dev "production" remote. This is the actual website code that is loaded to mod_wsgi)
         |   |
         |   |- settings.py
         |   |- urls.py
@@ -87,35 +91,44 @@ On Ubuntu:
 
 ## Git Repositories
 
-* Server: The project bare git repository is on production, at **/home/django/site_repo.git**
-* Server: The production website repository, which is the code that mod_wsgi loads, is at  **/home/django/mysite/site_repo**
-* Development local website: A clone of the server bare repository at your user directory, at **~/myprojectsd/mysite/site_repo**
+###Origin Remote 
+On the server, a bare git repository is at `@server:/home/django/site_repo.git`. This is the project central repo, separated from the website code, so you can push often to save the progress of your work. To push everything, from your local `site_repo`:
+
+	you@dev-machine: git push --all remote origin
+
+###Production Remote  
+On the server, the production website repository, the code that mod_wsgi loads: at `@server:/home/django/mysite/site_repo`. Do not push directly to this repository, but rather use [Deployment](deployment.md)
 
 
-*Note: If you replaced myprojects or mysite with your own projects and site dir names, it will appear under the names you chose*
+###Development Local Website 
+A clone of the server bare repository, at your user directory, at `@dev-machine:~/myprojectsd/mysite/site_repo`.
 
-When you work on the code on your local machine, you push to the bare git repository on the server, and then deploy by pushing master to the production repository. See [Deployment](deployment.md)
+
+*Note: "myprojects" or "mysite" are the actual names of the project and site you provided when installing the server and the dev environment.*
+
+**Summary:** When you work on the code on your local machine, you push to the origin remote. Deploy to the site production repository. Keep the master branch stable, and work on temporary or other branches. See [Deployment](deployment.md)
 
     
     
 ## Production & Development Settings  
 
 
-#### Separate settings file for development and production
+### A Separate settings file for development and production
 
 The common practice is to create several environment specific settings files, in addition to the django main settings file. The project includes the following environment settings files: 
 
-* settings_production.py
+* `settings_production.py`
 
-* settings_dev.py
+* `settings_dev.py`
 
-Settings.py tries to import both, but on production, only settings_production.py is available, and on development machine only settings_dev.py file is available. 
-The imported file environment setting file adjusts the main settings. 
+When django loads, the main `settings.py` tries to import both. On production, only `settings_production.py` is available, and on the dev machine, only `settings_dev.py` is available. 
+Thus, the final settings for each environemnt will be different.  
 
-The most important change is DEBUG: in settings_production.py DEBUG=False, and in settings_dev.py DEBUG=True.
+The most important change between production and the dev machine is `DEBUG`: In `settings_production.py`, the `DEBUG=False`, and in `settings_dev.py` it's `DEBUG=True`.
 
 
-Note that **both** settings files are maintained in the repository. To adjust for production or development, settings.py tries to import the environment settings files from a **non-repository** directory. The correct environment file should be copied on each machine from the repository (**site_repo** directory), to the **site_config** directory.
+Note that **both** settings files are maintained in the repository. This why  settings.py tries to import the specific environment settings files from a **non-repository** directory.    
+The correct environment file should be copied on each machine from the repository (the **site_repo** directory), to the **site_config** directory. 
 
 *Note: site_config is on the python path and you can import from it*
 
@@ -132,6 +145,7 @@ So the settings look as following on production:
         |- site_config
         |	|
         |	|- settings_production.py (imported when the site loads)
+        |	|- secrets.py (optional)        
         |
         |- site_repo
         |   |
@@ -142,7 +156,7 @@ So the settings look as following on production:
         |   |- wsgi.py
         ...
         
-And on development machine:
+And on the development machine:
 
     ~/myprojects/mysite/
     |   
@@ -165,7 +179,10 @@ And on development machine:
         |   |- wsgi.py
         ...
 
-*Note: When you commit a change to settings_dev.py or settings_production.py in the repository, you have to copy the changed file to site_config/ and reload the site, to see the settings changes take effect
+When you commit a change to `settings_dev.py` or `settings_production.py` in the repository, you have to copy the changed file to `site_config/` and reload the site.    
+The deployment script runs this copy, and on the dev machine you will have to manaualy copy `settings_dev.py` after you changed it, from the repository to `site_config`.
+
+
 
 
 ##### Ad-hoc settings
