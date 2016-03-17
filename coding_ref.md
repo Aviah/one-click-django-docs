@@ -3,7 +3,7 @@
 This document is a quick reference. For more details about the project layout, production and development settings, static files, etc., see Project_Ref.
 
 [Imports](#imports)    
-[Templates](#imports)    
+[Templates](#templates)    
 [Settings](#settings)    
 [Logging](#logging)     
 [Cache](#cache)     
@@ -33,7 +33,7 @@ Relative Imports (conventional relative imports):
 	from ..baz import bar
     
   
-##Templates
+## Templates
 
 Templates are saved in the `site_repo/templates` directory.
 
