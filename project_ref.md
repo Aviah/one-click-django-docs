@@ -306,71 +306,74 @@ Since `collectstatic` picks the files in `mysite/site_repo/static/`, it will als
 
 ### Users' Uploads
 
-1. Images are served
-2. Files are served from **mysite/media_uploads/** directory, both for runserver , or via Nginx
-2. Uploads are configured with MEDIA_URL and MEDIA_ROOT, django's settings for uploaded files.
-3. Refernces in templates should use {{ MEDIA_URL }}:
 
-		<img src="{{MEDIA_URL}}bar.png">		
-4. Uploads Limit:
-You can limit the upload file size in django, with a custom file uploader (see the django docs).    
-The project limits requests in Apache conf file, with LimitRequestBody, to 10MB. You can change it according to the typical uploads of your site:
+1. Files are served from the `mysite/media_uploads/` directory, both by django's development server and Nginx
+2. Uploads are configured with `MEDIA_URL` and `MEDIA_ROOT`, django's settings for uploaded files.
+3. References in templates should use {{ MEDIA_URL }}:
+
+		<img src="{{MEDIA_URL}}bar.png">	
+		
+	*There is no spaces between the `}}` and `bar.png`*	
+
+**Uploads Limit:** You can limit the upload file size in django, with a custom file uploader (see the django docs).       
+The project limits requests in Apache conf file, with `LimitRequestBody`, to 10MB. You can change it according to the typical expected uploads of your site:
 
     	you@vps-machine$ nano /etc/apache2/apache2.conf.django
     	you@vps-machine$ nano /etc/apache2/apache2.conf.django.auth
     	you@vps-machine$ site_auth_off (or site_auth_on)    
    
 
-*Note: For external files, expire date, and browser cache, see [Web Servers]()*
+*Note: For external files, expire date, and browser cache, see [Web Servers](#web-servers)*
 
 
 ## Django Admin
 
-**To Access the production website admin:**
+**Production site admin:** 
 
-www.yourdomain.com/admin
+Browse to: `www.yourdomain.com/admin`
 
-**To Access admin on the local development site:**
+**Dev machine, local site, admin:**
 
-Django dev server: 127.0.0.1:80000/admin   
-Nginx+Apache: 127.0.0.1/admin
+Django dev server: `127.0.0.1:80000/admin`      
+Nginx+Apache: `127.0.0.1/admin`
 
 
+Then login with the admin username and password, which you provided during the installation. 
 
-Then login with the admin username and password, which you provided during the installation. You can change the admin url, see django docs and urls.py in the project.
+You can change the admin url (recommended), see the django docs and the main project `urls.py`.
 
 
 ## Cache
 
-The site is configured with the simple django basic file-based cache, at **mysite/django_cache**.  
+The site is configured with the simple django basic file-based cache, at `mysite/django_cache`.  
 
-Use the cache:
+To use the cache:
 
     from django.core.cache import cache
     ...
     cache.set('key','foo')
     cache.get('key')
     
-  See an example in home/views.py.
+  See an example in `mysite/site_repo/home/views.py`.
 
 *Note: django provides many other caching options, multiple caches, etc, see the django docs.*
 
 
 ## Web Servers
 
-**Django Development Server**: Serves the site at port 8000. This is the best way to develop and test. The site is served at 127.0.0.1:8000,  and when DEBUG=True, everything is served with this server, including js, css (and images), so every change in the code is immidiatly reflected in the site. However, this server is not secured and not suitable for production.
+**Django Development Server**: This is the best way to develop and test. The site is served at `127.0.0.1:8000`,  and when `DEBUG=True`, everything is served with the django dev server, including js, css (and images). Every change in the code is immidiatly reflected in the site. However, this server is not secured and not suitable for production.
 
-**Nginx**: Nginx serves requests on port 80. Requests for static files are served directly by Nginx. For all the other requests, Nginx serves as a proxy and passes the requests to Apache. This configuration has many advantages, django docs and other places have a lot of details as well as the pros and cons compared to other configurations.  
-Since static files are not served from the repo, collectstatic and site reload is required when the static files change. See External files.
+**Nginx**: Nginx serves requests on port `127.0.0.1` localy, and `www.yourdomain.com` for the real site.    
+Requests for static files are served directly by Nginx. With all the other requests, Nginx serves as a proxy and passes the requests to Apache.
+This configuration has many advantages (see the django docs). The main advantage is that Apache-mod-wsgi do not have to wait to the actual delivery of the response over the Internet, they just handle the response localy to Nginx and free to work on the next request.   
+Since static files are not served from the repository, `collectstatic` and a site reload are required when the a static file changes.
 
-**Apache**: Apache listens on 127.0.0.1:8001. So it doesn't listen to external requests, only to requests that Nginx passes to it. These are the non static/media requests that go to Apache, which sends them to django via mod_wsgi.
+**Apache**: Apache listens on `127.0.0.1:8001`. It doesn't listen to external requests, only to requests that Nginx, as a proxy, passes to it.    
+These are the non static/media requests, that Nginx passes to Apache, and Apache via mod_wsgi - to django. 
 
-**Browsers Cache:** In Nginx, the static, media, and uploads, are configured to 180d expiry. This expiry date will not affect js,css, since each time you change the source of js,css, you should run collectstatic. Then, when you reload the site, django will not request the old cached files. With collectstatic, any change in the js,css scripts is reflected with requests to the newer versions.
+**Browsers Cache:** In Nginx, the static, media, and uploads, are configured for 180d expiry. This expiry date will not affect js & css, since each time you change the source of a js, or a css file, you should run deploy with `fab deploy:True` (runs `collectstatic`). After `collectstatic` and a site reload, django will not request the old cached files.
 
-
-**Replace cached images** Images do not have "collectstatic", so during development, in order to see new images instead of the cached, just clear the browser's cache, or use select "ignore cache" from the developer's tools.    
-Once images are ready for production, the best solution is to change the image name in the site code, so the browsers will not use an older cached image.   
-Otherwise change the 180d config in /etc/nginx/sites-enabled/django. Later, when images change, the best solution is to save the new image with a new name
+**Cached images:** `collectstatic` is aware when you replace an image, even if the new image has the same file name. It will create a new hashed image name, and django will request the new image, similarly when a js or a css file changes.
 
 Support this project with my affiliate link| 
 -------------------------------------------|
