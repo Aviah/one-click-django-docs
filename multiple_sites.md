@@ -1,30 +1,32 @@
 #Using one-click-django server for multiple sites 
 
-**All developed from the same dev machine**
+**Use the same dev machine for multiple one-click server sites**
 
+## The Simplest Solution
+
+Before too much configuration, consider a simple alternative:
+
+1. A separate VPS for each website with one-click-django-server
+2. A separate dev **virtual machine** for each website with one-click-django-dev
+3. Done
 
 ## Overview
 
-For simplicity, the one-click-django project is built and configured as one website, with one matching development environment. The one-server/one-site  saves some hustle, especially if you are new django.
+To keep as simple as possible, the one-click-django project is built and configured as one website, with one matching development environment. The one-server/one-site  saves some hustle, especially if you are new django.
 
-However, it's fairly easy to adjust your setup to auto install and develop multiple sites with the same scripts.
-
-If you want to use the scripts from multiple websites, you can build a dedicated VPS server for each website. Wehn a VPS costs $10 a months, if you have 2-3 website it's not worth it to config a one server for multiple websites.
-
-Then configure the dev machine to hold multiple sites. It's possible to install virtualenv, create separate environment for each site, and a separate virtual host in the webservers. I suggest here a solution which to me seems simpler: save the config files of each site, and when you switch sites just run a script that copies the config files to the correct place, and restart the webservers.
-
-### Why Multiple VPS?
-
-The easiest solution is dedicate one VPS per site. Off course, you can configure the same VPS to serve multiple sites, but when a decent VPS costs $10 a month, it just doesn't worth the time and effort, unless you serve really many sites, and the savings from using one VPS for all multiple websites is substantial.
+However, it's fairly easy to adjust your setup to auto-install and develop multiple sites with the same scripts.
 
 
-### The Simplest Solution
-1. A separate VPS for each website with one-click-django-server
-2. A separate dev virtual machine for each website with one-click-django-dev
-3. Done
+### Multiple VPS
+
+The easiest solution is a dedicated VPS per site. With the auto-install script, to build a dedicated VPS server for each website. 
+
+You can configure the same VPS to serve multiple sites, but when a decent VPS costs $10 a month, IMHO it just doesn't worth the time and effort, unless you serve a lot of small sites, and the the savings from using one VPS for all the websites is significant.
+
+### Dev Machine
+It's possible to install virtualenv, create a separate environment for each site, and a separate virtual host in the webservers. I suggest anothersolution which to me seems simpler: save the config files of each site, and when you switch sites just run a script that copies the config files of the current site, and restart the webservers.
 
 
-## Configure the Same Dev Machine for Multiple Websites
 
 ** The following doc uses mysite1, mysite2, as the names of the two sites**
 
