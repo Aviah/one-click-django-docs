@@ -185,40 +185,37 @@ And on the development machine:
 When you commit a change to `settings_dev.py` or `settings_production.py` in the repository, you have to copy the changed file to `site_config/` and reload the site.    
 The deployment script runs this copy, and on the dev machine you will have to manaualy copy `settings_dev.py` after you changed it, from the repository to `site_config`.
 
-To use the optional `secrets.py` to save passwords and SECRET_KEY outside the repository, which is important if your repository is public, see[Save Secrets Outside the Repository](https://github.com/Aviah/one-click-django-docs/blob/master/what_next.md#save-secrets-outside-the-repository)
+To use the optional `secrets.py` to save passwords and the SECRET_KEY outside the repository, which is important if your repository is public, see [Save Secrets Outside the Repository](https://github.com/Aviah/one-click-django-docs/blob/master/what_next.md#save-secrets-outside-the-repository)
 
 
+### Ad-hoc settings
 
+Sometimes you just need an ad-hoc settings change to test or try something.
 
-##### Ad-hoc settings
+For this purpose, there is a another settings file in `site_config`: `settings_tmp.py`. Use it for these ad-hoc settings.
 
-Sometimes you just need an adhoc settings change to test or try something. So there is a another settings file in site_config: settings_tmp.py. Use it for these adhoc settings.
-
-Settings_tmp.py is imported after settings_dev, but before settings_production.*, so production settings always have priority.
+The `settings_tmp.py` is imported after `settings_dev`, but **before** `settings_production.py`, so production settings always have a priority.
   
 
 
-## Staic Files: javascript,css
+## Staic Files: javascript, css
 
 Out of the box, django separates external resources into two categories: site resources, and user uploads. Each is served from it's own url and root directory.  
-However, it's often handy to have three categories, as follows:
+However, it's often handy to have **three** categories of static files, as follows:
 
-1. **Scripts:** js & css files, that change often during development.
+1. **Scripts:** javascript & css files, that change often during development.
 1. **Non js/css**: Pre-prepared, optimized assets, such as the logo, icons, images etc.
 1. **User uploads**: e.g. avatars
 
 
-#### Where the files are saved?
+### Where the files are saved?
 
-Scripts files (js, css) should be saved and maintained in the repository. The local development site will serve them via django, from the repository. 
+Scripts files (js, css) are saved and maintained in the repository `@dev-machine:~/mysite/site_repo/static` directory. The local development site will serve them, by django, from the repository. 
 
-On production, django's collectstatic copies the scripts to external meida directory, and the files are are served by the webserver from this directory (and not by django).
-
-Images (and other static, non-scripts resources) are managed manualy, and you should upload them to the server media dirctory.  
+On production, django's `collectstatic` copies the scripts to external media directory, `@server:/home/django/mysite/static_root`. The files from this directory are served by the Nginx directly (and not by django).
 
 
-
-#### Serving scripts: js,css
+### Serving Scripts: js,css
 
 **Development:**    
 
@@ -226,13 +223,13 @@ Webserver | django development server
 ----------|--------------------------  
 **Settings**|**DEBUG=True**   
 
-Work on django development server:
+To see the changes after you change the static files:
 
 	you@dev-machine: python ~/myprojects/mysite/manage.py runserver
 
-Django dev server will serve the scripts directly from the repository. This is great for development, since every change is immediately reflected in the  website, at 127.0.0.1:8000.
+Django development server will serve the scripts directly from the repository. This is great for development, since every change is immediately reflected in the  website, at `127.0.0.1:8000`.
 
-*Note:Django development server will **not** serve static files when DEBUG=False*
+Django development server will **not** serve static files when `DEBUG=False`.
 
 **Production:**
   
@@ -242,21 +239,21 @@ Webserver | Nginx + Apache
 **Settings**|**DEBUG=False**  
 
 
-Static files are served directly by Nginx. Nginx serves the files from the STATIC_ROOT director (mysite/static_root), and does not pass the js or css request to django. 
+Static files are served directly by Nginx. Nginx serves the files from the `STATIC_ROOT` directory (`@server:/home/django/mysite/static_root`), and does **not** pass the js & css requests to django. 
 
-Since the files are **not** served from the repository, every change to the static files in the repository requires update to the files in mysite/static_root: 
+Since the files are **not** served from the repository, every change to the static files in the repository requires an update to the files in `mysite/static_root`: 
 
     you@production-machine: python ~/myprojects/mysite/manage.py collectstatic
     you@production-machine: site-reload
     
-This update with collectstatic a is part of deployment, see [deployment](deployment.md).
+You don't have to run the above lines, since this update with `collectstatic`  is a part of the deployment, see [Deployment](deployment.md).
     
-Django identifies the correct file to serve with the static template tag, so you must use this tag in the templates for js,css files:
+Django identifies the correct file to serve with the `static` template tag, so you must use this tag in the templates:
 
 	<link href="{% static 'foo.css' %}" type="text/css" rel="stylesheet">
 	<script src="{% static 'bar.js' %}" type="text/javascript">
 	
-*Note: The static tag is loaded in the base template. see [Coding Reference](coding_ref.md)*
+See the coding reference for [Templates](https://github.com/Aviah/one-click-django-docs/blob/master/coding_ref.md#templates)*
 
 
 **Testing**
@@ -267,47 +264,47 @@ Webserver | Nginx + Apache
 
 
 
-Before pushing code to production, it's better to make sure it works with Apache/Nginx on the dev machine, and not only on the django dev server. 
-If you changed any static file, you will need to run collectstatic and reload the site, and then browse to the local Apache/Nginx site at 127.0.0.1:
+Before you push code to production, it's better to make sure it works with Apache/Nginx on the dev machine (and not only on the django development server).     
+If you changed any static file, you run `collectstatic` and reload the site, and then browse to the local Apache/Nginx site at `127.0.0.1`:
 
     you@dev-machine: python ~/myprojects/mysite/manage.py collectstatic
     you@dev-machine: site-reload
 
  
 **Summary:**    
-1. During **development**, use django development server, so files are served directly from the repository when DEBUG=True.   
-2. On **production**, static files are served with Nginx. To see changes to js, css when the site is served via Nginx/Apache you must run collectstatic and reload the site.    
+1. During **development**, use the django development server, and the files are served directly from the repository when DEBUG=True.   
+2. On **production**, static files are served with Nginx, and you have to deploy with `collectstatic`, using `fab deploy:True`.
 
 
-*Note: django also supports serving static files from the application's  directory, see django docs*
+*Note: django also supports serving static files from the application's  directory, see the django docs*
 
 ## Staic Files: Images (or other media)
 
-#### Images
+### Where the website images are saved?
 
-1. Images are saved outsite the repository **mysite/media_resources/**
-2. Collectstatic looks for new or changed images (the images directory is included in STATIFILES_DIR)
-3. Refefrnces to images in templates use the static template tag:
+1. Images are saved outsite the repository at `mysite/media_resources/`.
+2. `collectstatic` looks for new or changed images, because the images directory is included in `STATICFILES_DIRS`
+3. References to images in templates use the `static` template tag:
 
 		<img src="{% static 'foo.png' %}">
 		
-3. The images files are served similarly to js,css static files, by Nginx or django development server. See [Staic Files: javascript,css]()
-
+3. The images files are served similarly to js,css static files, by Nginx or the django development server.
 
 Since images are saved outside the repository, you will need to scp the files to production:
 Example:
 
         you@dev-machine: scp logo.png django@PUB.IP.IP.IP:~/mysite/media_resources/
         
-Then run collectstatic on the server.
+Then run `collectstatic` on the server. When you use `fab deploy:True` the fabric deployment script will run it as well, see [Deployment with Images](https://github.com/Aviah/one-click-django-docs/blob/master/deployment.md#deployment-with-images--or-ther-media-resources).
 
-*Note: Saving images outsied the repository is a personal preference. If you want to save images in the repository, you can add a "media" directory to site_repo, and save the images there. Just add this directory to STATICFILES_DIR, so collectstatic find them. Collectstatic will also find images in any app with a "static" sub-directory, if the  
+### Managing Images in the repository
+By default, the project images are managed **outside** the repository. This is really a personal preference. If you want to save images **in** the repository, just add an images directory to the repository to `mysite/site_repo/static/images/`, copy the images to this directory, push and deploy with `fab deploy:True`.
+Since `collectstatic` picks the files in `mysite/site_repo/static/`, it will also pick the `images`.
+
+*Note: The favicon is also saved as an image in `mysite/media_resources/favicon.ico`, see the project's `base.html` template.*
 
 
-*Note: The favicon is also served from this directory. The file is at mysite/media_resources/favicon.ico, see the projects base.html.*
-
-
-#### Uploads
+### Users' Uploads
 
 1. Images are served
 2. Files are served from **mysite/media_uploads/** directory, both for runserver , or via Nginx
