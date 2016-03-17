@@ -220,29 +220,30 @@ A few things to consider:
 ### CDN
    
 The simplest CDN just pulls a file from the original url, and distribute it with anohter url.    
-In a typical deployment, the browser requests `cdn.example.com/static/main.js`. The CDN goes to `www.example.com/static/main.js`, pulls `main.js` to the CDN's cache, and then sends it to the browser. The next time someone asks for `cdn.example.com/static/main.js`, it's already in the CDN's cache and served quickly.
+In a typical deployment, the browser requests `cdn.example.com/static/main.js`. The CDN goes to `www.example.com/static/main.js`, pulls `main.js` to the CDN's cache, and then sends it to the browser.    
+The next time someone asks for `cdn.example.com/static/main.js`, it's already in the CDN's cache and served quickly.
 
 The configuration is easy. Here is an overview how to implement it:
 
 1. Sign up for a CDN. Follow the CDN's provider instructions of how to add a subdomain such as `cdn.example.com`, and allow the CDN to use it.
 
-2. Point the cdn to your site at `www.yourdomain.com`. The CDN will request the files from Nginx, in the same way that a client browser request these files. The CDN pulls the files with the site production urls, directly from  Nginx.
+2. Point the cdn to your site at `www.yourdomain.com`. The CDN will request the files from your website, in the same way that a client browser requests these files. The CDN pulls the files with the site production urls, directly from  Nginx.
 3. The CDN then caches the files. It has to call your Nginx once to get the file, afterwards it will use it's cache.
 4. Only when the file is missing from the CDN cache, it will ask for it from your website Nginx. This could happen, because CDNs clear files from their cache if a file was not requested for a given period.
-5. **The CDN calls Nginx to get the files, but the browsers that visit your site don't**. The browser does not use reuests like `www.yourdomain.com/media/logo.png`, since this will lead it to your site's Nginx. Rather, the browser calls something like `cdn.yourdomain.com/media/logo.png`, which goes to the CDN.
+5. **The CDN calls Nginx to get the files, but the browsers that visit your site don't**. The browser does not use requests like `www.yourdomain.com/media/logo.png`, since this will lead it to your site's Nginx. Rather, the browser calls something like `cdn.yourdomain.com/media/logo.png`, which goes to the CDN.
 4. To point the browser to the CDN and **not** to the site, add the following settings to `settings_production.py`:
 
-       STATIC_URL = '//cdn.yourdomain.com/static/'
-       MEDIA_RES_URL = '//cdn.yourdomain.com/media/'
-       MEDIA_URL = '//cdn.yourdomain.com/uploads/'
+        STATIC_URL = '//cdn.yourdomain.com/static/'
+        MEDIA_RES_URL = '//cdn.yourdomain.com/media/'
+        MEDIA_URL = '//cdn.yourdomain.com/uploads/'
        
-      Commit, deploy, and reload the site. 
+      *Use the actual CDN url* 
 
-7. The website Nginx is busy most of the time serving as a proxy to Apache-mod-wsgi. The CDN offloads the media files, and the user will get these images and media much faster from the CDN's cache.
+7. With the CDN, the website Nginx is busy most of the time serving as a proxy to Apache-mod-wsgi. The CDN offloads the media files, and the user will get these images and media much faster from the CDN's cache.
 
-Development and deployment are the same. Whenever you change a static file, deployment with `fab deploy:True` to run `collectstatic`. This will update the static files and reload the site. When the user will request one of those new static files (`collectstatic` renamed the files with the hash), the CDN gets this new file from your site's Nginx, and saves it to the CDN's cache.
+Development and deployment are the same. Whenever you change a static file, deploy with `fab deploy:True` to run `collectstatic`. This will update the static files and reload the site. When the user requests for one of those new static files (`collectstatic` renamed the files with the new hash), the CDN gets this new file from your site's Nginx, and saves it to the CDN's cache.
 
-Other CDN do not pull from your current site, and use their own storage. You  have to upload the files to the CDN's storage. Django allows to customize `collectstatic` to push the files to the correct CDN cache, see the django docs. 
+Some CDN do not pull from your current site, but rather use their own storage. You  have to upload the files to this CDN's storage. Django allows to customize `collectstatic` to push the files to the correct CDN cache, see the django docs. 
 
  Support this project with my affiliate link| 
 --------------------------------------------|
