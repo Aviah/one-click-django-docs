@@ -177,7 +177,7 @@ Https is handled by Nginx.  When Nginx receives an https request, as a proxy, Ng
 
 So when you move a site to https, it does not require many changes on the django side: Your django code continues to get the same unencrypted traffic. However, it's still important to get into the details in order to implement https properly.
 
-The recommended practice is to move everything to https, and avoid mixed http/https websites. 
+The recommended practice is to move entire site to https, and avoid mixed http/https websites. 
 
 Here is a general overview of the steps to move the site to https:
 
@@ -191,7 +191,7 @@ Here is a general overview of the steps to move the site to https:
 
 5.  Move the current Nginx server to https: edit `/etc/nginx/sites-enabled/django`. Change the server to listen on 443, and add ssl configs: `ssl_on`, `ssl_certificate` for the certificate+intermedate file, `ssl_certificate_key` of the key file. see Nginx docs.
 
-6. In `/etc/nginx/sites-enabled/django`, add another Nginx server that listens to the same domain on port 80, and re-writes everything to https.
+6. In `/etc/nginx/sites-enabled/django`, add another Nginx server that listens to the same domain on port 80, and rewrites everything to https: `rewrite ^ https://www.example.com$request_uri? permanent;`
 
 7. Restart Nginx. If everything works, `curl www.yourdomain.com` should return a 301 redirect.
 
@@ -224,11 +224,11 @@ In a typical deployment, the browser requests `cdn.example.com/static/main.js`. 
 
 The configuration is easy. Here is an overview how to implement it:
 
-1. Sign up for a CDN. Follow the cdn provider instructions of how to add a subdomain such as `cdn.example.com`, and allow the CDN to use it.
+1. Sign up for a CDN. Follow the CDN's provider instructions of how to add a subdomain such as `cdn.example.com`, and allow the CDN to use it.
 
 2. Point the cdn to your site at `www.yourdomain.com`. The CDN will request the files from Nginx, in the same way that a client browser request these files. The CDN pulls the files with the site production urls, directly from  Nginx.
 3. The CDN then caches the files. It has to call your Nginx once to get the file, afterwards it will use it's cache.
-4. Only if the file is missing in the CDN cache, it will ask for it from your website Nginx. This could happen, because CDNs clear files from their cache if a file was not requested for a given period.
+4. Only when the file is missing from the CDN cache, it will ask for it from your website Nginx. This could happen, because CDNs clear files from their cache if a file was not requested for a given period.
 5. **The CDN calls Nginx to get the files, but the browsers that visit your site don't**. The browser does not use reuests like `www.yourdomain.com/media/logo.png`, since this will lead it to your site's Nginx. Rather, the browser calls something like `cdn.yourdomain.com/media/logo.png`, which goes to the CDN.
 4. To point the browser to the CDN and **not** to the site, add the following settings to `settings_production.py`:
 
@@ -238,7 +238,7 @@ The configuration is easy. Here is an overview how to implement it:
        
       Commit, deploy, and reload the site. 
 
-7. The website Nginx is busy most of the time serving as a proxy to Apache-mod-wsgi, and the CDN offload the media files, and the user will get these images and media much faster from the CDN's cache.
+7. The website Nginx is busy most of the time serving as a proxy to Apache-mod-wsgi. The CDN offloads the media files, and the user will get these images and media much faster from the CDN's cache.
 
 Development and deployment are the same. Whenever you change a static file, deployment with `fab deploy:True` to run `collectstatic`. This will update the static files and reload the site. When the user will request one of those new static files (`collectstatic` renamed the files with the hash), the CDN gets this new file from your site's Nginx, and saves it to the CDN's cache.
 
