@@ -16,7 +16,7 @@
 ## Project Layout
 
 The project layout is a mixture of common practices and personal preferences.   
-However, django is flexible and everything could be easily changed.
+However, django is flexible, and everything can be easily changed.
 
 
 **Production**
@@ -97,7 +97,7 @@ On the server, a bare git repository at `@server:/home/django/site_repo.git`. Th
 	you@dev-machine: git push --all remote origin
 
 ###Production Remote  
-On the server, the production website repository, the code that mod_wsgi loads: at `@server:/home/django/mysite/site_repo`.    
+On the server, the production website repository. This is the code that mod_wsgi loads. The repo is at `@server:/home/django/mysite/site_repo`   
 Do not push directly to this repository, but rather use [Deployment](deployment.md)
 
 
