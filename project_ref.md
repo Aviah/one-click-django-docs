@@ -253,7 +253,7 @@ Django identifies the correct file to serve with the `static` template tag, so y
 	<link href="{% static 'foo.css' %}" type="text/css" rel="stylesheet">
 	<script src="{% static 'bar.js' %}" type="text/javascript">
 	
-See the coding reference for [Templates](https://github.com/Aviah/one-click-django-docs/blob/master/coding_ref.md#templates)*
+See the coding reference for [Templates](https://github.com/Aviah/one-click-django-docs/blob/master/coding_ref.md#the-templates)
 
 
 **Testing**
