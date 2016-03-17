@@ -12,19 +12,20 @@ Before too much configuration, consider a simple alternative:
 
 ## Overview
 
-To keep as simple as possible, the one-click-django project is built and configured as one website, with one matching development environment. The one-server/one-site  saves some hustle, especially if you are new django.
+To keep it as simple as possible, the one-click-django project is built and configured as one website, with one matching development environment. The one-server/one-site  saves some hustle, especially if you are new to django.
 
 However, it's fairly easy to adjust your setup to auto-install and develop multiple sites with the same scripts.
 
 
 ### Multiple VPS
 
-The easiest solution is a dedicated VPS per site. With the auto-install script, to build a dedicated VPS server for each website. 
+The easiest solution is a dedicated VPS per site. With the auto-install script, build a dedicated VPS server for each website. 
 
-You can configure the same VPS to serve multiple sites, but when a decent VPS costs $10 a month, IMHO it just doesn't worth the time and effort, unless you serve a lot of sites, and the the savings from using one VPS for all the websites is substancial.
+You can configure the same VPS to serve multiple sites, but when a decent VPS costs $10 a month, IMHO it just doesn't worth the time and effort, unless you serve a lot of sites, and the savings from using one VPS for all the websites is substancial.
 
 ### Dev Machine
-It's possible to install virtualenv, create a separate environment for each site, and a separate virtual host in the webservers. I suggest anothersolution which to me seems simpler: save the config files of each site, and when you switch sites just run a script that copies the config files of the current site, and restart the webservers.
+It's possible to install virtualenv, create a separate environment for each site, and a separate virtual host for the web servers.    
+I suggest another solution which to me seems simpler: save the config files of each site. When you switch sites, just run a script that copies the config files of the current site, and restart the webservers.
 
 
 
@@ -86,6 +87,14 @@ At this point you have:
 3. All the config files for `mysite1` are saved and commited, and you made a database dump.
 
 Now continue and install the development environment for the second site `mysite2`, on the same development machine, with one-click-django-dev: on [OSX El-Capitan](https://github.com/Aviah/one-click-django-dev-osx-el-capitan), or [Ubuntu 14.04 Trusty desktop](https://github.com/Aviah/one-click-django-dev-ubuntu-14-04-trusty)
+
+Before you run `setup.sh`, comment the line:
+
+	CREATE USER 'django'@'localhost' IDENTIFIED BY 'imnotsecretdjangomysqlpassword';
+
+In the install files `scripts/db.sql` script (the django user already exists).
+
+On the dev machine, use the **same** database password for both mysite1 & mysite2, since they use the same local MySQL server. On production, you can use different password for each site, in the site `settings_production.py` or `secrets.py`.
    
 When the dev environment installation is complete, the local django site at `127.0.0.1` (or `127.0.0.1:8000` with django development server) should show `mysite2`.
 
