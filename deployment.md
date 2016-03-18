@@ -121,7 +121,7 @@ After all the site images were copied to the server:
 
 	you@dev-machine$ fab deploy:True
 	
-Similarily to the deployment of js,css, this will run `collectstatic` on the server, and update the static files with the new images.
+Similarly to the deployment of js,css, this will run `collectstatic` on the server, and update the static files with the new images.
 
 *Note: If you find yourself uploading resources frequently, you can add a fabric command to upload and deploy. Edit the fabfile in your home directory.*
 

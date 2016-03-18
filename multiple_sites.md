@@ -100,7 +100,7 @@ When the dev environment installation is complete, the local django site at `127
 
 ### Save Config Files and DB Dump of mysite2
 
-Now add `etc` directory to the 2nd site repository, and copy the files, similarily to what you saved to the first site.
+Now add `etc` directory to the 2nd site repository, and copy the files, similarly to what you saved to the first site.
 
 Add the files and commit.
 

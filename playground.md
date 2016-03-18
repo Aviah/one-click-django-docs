@@ -11,7 +11,7 @@ Make sure you installed the server, and the local development site. If you haven
 * Develop & Deploy:  on [OSX El-Capitan](https://github.com/Aviah/one-click-django-dev-osx-el-capitan), or [Ubuntu 14.04 Trusty desktop](https://github.com/Aviah/one-click-django-dev-ubuntu-14-04-trusty)
 
 
-*A note about the IDE: This is obviously a personal choice, what you feel that works for you. If you haven't selected an IDE yet, I recommend Wing IDE Pro which I use for years. It has the "Python Zen", just fits to the Python programmer, integrates with django, git, excellent debugging and great support* 
+*A note about the IDE: This is obviously a personal choice, what you feel that works for you. If you haven't selected an IDE yet, I recommend Wing IDE Pro which I use for years. It has the "Python Zen", just fits to the Python programmer, with django integration, git integration, excellent debugging and great support* 
 
 
 ## Play...
@@ -130,7 +130,7 @@ This pushes the change to the site bare repository, on the server:
     
 The push goes to the **central project repository**. The central repo saves the gradual progress of your work. You can push often to this repo,  it will not change the production website.  
 
-So now you have made a change, tested it localy, and pushed it to the the main project repo.
+So now you have made a change, tested it locally, and pushed it to the the main project repo.
 It seems like deployment time.   
 Easy enough:
 
@@ -250,7 +250,7 @@ To continue to the tutorial: [Django Tutorial Part 1: Create the Polls App
 
 Take a look at the project files, especially the repository `site_repo`. These files include a few examples of the basic django concepts.
 
-If you are new to django, why not take our version to the official django polls tutorial. It implments the polls app in in this real development-deployment-production environment, with git. When you finish this tutorial, the polls app will run on the real website at `www.yourdommain.com/polls`.    
+If you are new to django, why not take our version to the official django polls tutorial. It implments the polls app in this real development-deployment-production environment, with git. When you finish this tutorial, the polls app will run on the real website at `www.yourdommain.com/polls`.    
 Start here: [Django Tutorial with Deployment](https://github.com/Aviah/one-click-django-polls-tutorial)
 
 For the complete project reference: layout, files, directories, settings, deployment, media files, logging, coding reference etc, see the [Project reference docs](https://github.com/aviah/one-click-django-docs/)

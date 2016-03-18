@@ -185,7 +185,7 @@ Here is a general overview of the steps to move the site to https:
 
 2. Create a certificate signing request (CSR) with a matching key, using openssl, from the command line. You can save the files in `/etc/ssl`. Openssl asks you a few questions to create the CSR. The "Common Name" question is where you provide the domain. See your specific certificate issuer instructions about what exactly you should type here, depends on the certificate type and what you need (subdomains, for both www.exapmle.com and example.com etc). 
 
-3. Send the CSR to the certificate issuer (usually with a web form). If you purchased the simplest domain validation certificate, you should recieve the certificate by mail in minutes. You will recieve two files: your own certificate and the issuer intermediate certificates.
+3. Send the CSR to the certificate issuer (usually with a web form). If you purchased the simplest domain validation certificate, you should receive the certificate by mail in minutes. You will recieve two files: your own certificate and the issuer intermediate certificates.
 
 4. Save the certificate files on the server, and create one file with both (`cat your_certificate >> intermidiate_certificate`).
 
@@ -212,7 +212,7 @@ Here is a general overview of the steps to move the site to https:
 
 A few things to consider:
 
-+ Configure HSTS (recomended in Nginx, also possible with django security middleware), which tells the browsers to always request https from your site. This is a more secure option, provided you will not want to use http.
++ Configure HSTS (recommended in Nginx, also possible with django security middleware), which tells the browsers to always request https from your site. This is a more secure option, provided you will not want to use http.
 + Tell Google that your new https site is actually the **same** previous http site. Google has ton of staff about this topic, and it's important to do it right tto keep the Google rank when moving to https (use canonical links, webmaster tools etc, see Google's resources).  
 
 *Note: A simple domain validation SSL certificate is cheap. But if you use a CDN, adding your own certificate to receive https CDN may be expensive*

@@ -363,9 +363,9 @@ To use the cache:
 
 **Django Development Server**: This is the best way to develop and test. The site is served at `127.0.0.1:8000`,  and when `DEBUG=True`, everything is served with the django dev server, including js, css (and images). Every change in the code is immidiatly reflected in the site. However, this server is not secured and not suitable for production.
 
-**Nginx**: Nginx serves requests on port `127.0.0.1` localy, and `www.yourdomain.com` for the real site.    
+**Nginx**: Nginx serves requests on port `127.0.0.1` locally, and `www.yourdomain.com` for the real site.    
 Requests for static files are served directly by Nginx. With all the other requests, Nginx serves as a proxy and passes the requests to Apache.
-This configuration has many advantages (see the django docs). The main advantage is that Apache-mod-wsgi do not have to wait to the actual delivery of the response over the Internet, they just handle the response localy to Nginx and free to work on the next request.   
+This configuration has many advantages (see the django docs). The main advantage is that Apache-mod-wsgi do not have to wait to the actual delivery of the response over the Internet, they just handle the response locally to Nginx and free to work on the next request.   
 Since static files are not served from the repository, `collectstatic` and a site reload are required when the a static file changes.
 
 **Apache**: Apache listens on `127.0.0.1:8001`. It doesn't listen to external requests, only to requests that Nginx, as a proxy, passes to it.    
