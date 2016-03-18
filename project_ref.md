@@ -4,7 +4,7 @@
 [Project Layout](#project-layout)    
 [Git Repositories](#git-repositories)    
 [Production & Development Settings](#production--development-settings)    
-[Staic Files: javascript,css](#staic-files-javascriptcss)    
+[Staic Files: javascript, css](#staic-files-javascript-css)    
 [Staic Files: Images (or other media)](#staic-files-images-or-other-media)    
 [Django Admin](#django-admin)    
 [Cache](#cache)    
@@ -373,7 +373,7 @@ These are the non static/media requests, that Nginx passes to Apache, and Apache
 
 **Browsers Cache:** In Nginx, the static, media, and uploads, are configured for 180d expiry. This expiry date will not affect js & css, since each time you change the source of a js, or a css file, you should run deploy with `fab deploy:True` (runs `collectstatic`). After `collectstatic` and a site reload, django will not request the old cached files.
 
-**Cached Images:** `collectstatic` is aware when you replace an image, even if the new image has the same file name. It will create a new hashed image name, and django will request the new image, similarly when a js or a css file changes.
+**Cached Images:** `collectstatic` is aware when you replace an image, even if the new image has the same file name. It will create a new hashed image name, and django will request the new image, similarly when a javascript or a css file changes.
 
 Support this project with my affiliate link| 
 -------------------------------------------|
