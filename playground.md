@@ -70,7 +70,7 @@ Assuming you are in the site_repo dir:
 Django starts the development server, which should output:
 
 	January 20, 2016 - 11:09:35
-	Django version 1.8.7, using settings 'site_repo.settings'
+	Django version 1.8.9, using settings 'site_repo.settings'
 	Starting development server at http://127.0.0.1:8000/
 	Quit the server with CONTROL-C.
 	
